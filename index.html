@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extreme Studios — AI Engineering &amp; Software Development</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <!-- Subtle background grid -->
+  <div class="bg-grid"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo">EXTREME STUDIOS</a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="#projects">Projects</a>
+      <a href="#programs">Programs</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <h1>EXTREME STUDIOS</h1>
+          <p class="hero-sub">AI Engineering &amp; Software Development</p>
+          <h2 class="hero-headline">
+            <span>Membangun Teknologi.</span>
+            <span>Mengembangkan Ide.</span>
+            <span>Menciptakan Solusi.</span>
+          </h2>
+          <p class="hero-desc">
+            Extreme Studios adalah studio teknologi yang berfokus pada pengembangan Artificial Intelligence, software, aplikasi Android, dan solusi digital.
+          </p>
+          <div class="hero-cta">
+            <a href="profile.html" class="btn btn-primary">KENALI EXTREME STUDIOS</a>
+            <a href="#projects" class="btn btn-ghost">LIHAT PROJECT</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <svg class="ai-core" viewBox="0 0 400 400" aria-label="Abstrak AI Core">
+            <defs>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00eaff" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#00d4aa" stop-opacity="0.05"/>
+              </linearGradient>
+              <filter id="glowThin">
+                <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#00eaff" flood-opacity="0.35"/>
+              </filter>
+            </defs>
+            <g filter="url(#glowThin)">
+              <polygon points="200,40 340,300 60,300" fill="none" stroke="#00eaff" stroke-width="0.75" opacity="0.7"/>
+              <polygon points="200,90 310,270 90,270" fill="none" stroke="#00eaff" stroke-width="0.5" opacity="0.5"/>
+              <polygon points="200,140 280,240 120,240" fill="none" stroke="#00eaff" stroke-width="0.75" opacity="0.6"/>
+              <circle cx="200" cy="200" r="45" fill="none" stroke="#00eaff" stroke-width="0.75" opacity="0.8"/>
+              <circle cx="200" cy="200" r="25" fill="none" stroke="#00eaff" stroke-width="0.5" opacity="0.9"/>
+              <circle cx="200" cy="200" r="8" fill="#00eaff" opacity="0.9"/>
+              <line x1="200" y1="40" x2="200" y2="360" stroke="#00eaff" stroke-width="0.25" opacity="0.2"/>
+              <line x1="60" y1="300" x2="340" y2="40" stroke="#00eaff" stroke-width="0.25" opacity="0.2"/>
+              <line x1="340" y1="300" x2="60" y2="40" stroke="#00eaff" stroke-width="0.25" opacity="0.2"/>
+              <circle cx="200" cy="200" r="85" fill="url(#grad1)" opacity="0.15"/>
+              <circle cx="200" cy="200" r="60" fill="url(#grad1)" opacity="0.1"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFILE PREVIEW -->
+    <section class="section profile-preview" id="profile">
+      <div class="container narrow">
+        <h2 class="section-title">Kami Membangun Teknologi dari Sebuah Ide.</h2>
+        <p class="section-body">
+          Extreme Studios mengembangkan software, aplikasi, dan teknologi berbasis Artificial Intelligence melalui proses eksplorasi, engineering, pengujian, dan pengembangan produk.
+        </p>
+        <a href="profile.html" class="btn btn-secondary">LIHAT PROFILE LENGKAP</a>
+      </div>
+    </section>
+
+    <!-- FEATURED PROJECTS -->
+    <section class="section projects" id="projects">
+      <div class="container">
+        <h2 class="section-title">Project Unggulan</h2>
+        <div class="project-grid">
+          <article class="project-card">
+            <a href="#" class="project-link" aria-label="DIANA Smart Assistant">
+              <div class="project-visual">
+                <div class="project-mockup diana"></div>
+              </div>
+              <div class="project-info">
+                <h3>DIANA Smart Assistant</h3>
+                <p class="project-category">AI Engineering</p>
+              </div>
+            </a>
+          </article>
+          <article class="project-card">
+            <a href="#" class="project-link" aria-label="Extreme Studios Guitar FX">
+              <div class="project-visual">
+                <div class="project-mockup guitar"></div>
+              </div>
+              <div class="project-info">
+                <h3>Extreme Studios Guitar FX</h3>
+                <p class="project-category">Android / Audio Technology</p>
+              </div>
+            </a>
+          </article>
+          <article class="project-card">
+            <a href="#" class="project-link" aria-label="Movie HUB">
+              <div class="project-visual">
+                <div class="project-mockup movie"></div>
+              </div>
+              <div class="project-info">
+                <h3>Movie HUB</h3>
+                <p class="project-category">Android / Entertainment</p>
+              </div>
+            </a>
+          </article>
+        </div>
+        <div class="cta-wrap">
+          <a href="#" class="btn btn-ghost">LIHAT SEMUA PROJECT</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRAM -->
+    <section class="section programs" id="programs">
+      <div class="container">
+        <h2 class="section-title">Programs &amp; Events</h2>
+        <div class="program-card">
+          <div class="program-label">Program Sedang Berjalan</div>
+          <h3>PELATIHAN AI ENGINEER BASIC</h3>
+          <p>Untuk Siswa SD Kelas 4–6. Program pengenalan Artificial Intelligence dan pembuatan aplikasi Android dengan bantuan AI dan Android Studio.</p>
+          <div class="program-meta">
+            <span>4x Pertemuan</span>
+            <span>1 Jam / Pertemuan</span>
+            <span>Rp250.000 / Siswa</span>
+            <span>Kuota: 5–10 Siswa</span>
+          </div>
+          <a href="program.html" class="btn btn-secondary">LIHAT INFORMASI PELATIHAN</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CONTACT FOOTER -->
+  <footer class="contact" id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-brand">
+          <h2>EXTREME STUDIOS</h2>
+          <p>AI Engineering &amp; Software Development</p>
+        </div>
+        <div class="contact-info">
+          <p>WhatsApp: <a href="https://wa.me/6289677523666">0896-7752-3666</a></p>
+          <p>Fajar</p>
+          <a href="https://extremestudiosai.com" class="contact-domain">extremestudiosai.com</a>
+        </div>
+      </div>
+      <div class="contact-bottom">
+        <p>© 2026 Extreme Studios. Dibangun dengan presisi.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

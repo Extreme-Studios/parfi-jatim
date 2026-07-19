@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — Extreme Studios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .profile-hero { padding-top: 14rem; padding-bottom: 4rem; }
+    .profile-hero h1 { margin-bottom: 0.75rem; }
+    .profile-hero p { max-width: 640px; }
+
+    /* Section blocks */
+    .profile-section { padding: 6rem 0; border-top: 1px solid var(--border); }
+    .profile-section h2 { margin-bottom: 1.25rem; font-size: clamp(1.5rem, 3.5vw, 2.2rem); }
+    .profile-section p { max-width: 720px; }
+    .profile-section .section-body { text-align: left; }
+
+    /* Process flow */
+    .process-flow { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-top: 3rem; padding: 2rem 2.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; }
+    .process-step { color: var(--cyan-soft); font-family: var(--font-display); font-weight: 600; letter-spacing: 0.06em; font-size: 0.85rem; white-space: nowrap; }
+    .process-arrow { color: var(--cyan); font-size: 1.2rem; opacity: 0.7; }
+
+    /* Two-column layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    @media (max-width: 860px) { .two-col { grid-template-columns: 1fr; gap: 3rem; } }
+
+    /* Capability list */
+    .cap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+    .cap-item { padding: 1.5rem 1.75rem; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); transition: border-color 0.3s; }
+    .cap-item:hover { border-color: rgba(0,234,255,0.2); }
+    .cap-item h4 { color: var(--cyan); font-size: 0.9rem; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .cap-item p { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* Showcase cards */
+    .showcase-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; align-items: start; }
+    @media (max-width: 980px) { .showcase-grid { grid-template-columns: 1fr; gap: 3rem; } }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo">EXTREME STUDIOS</a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="#projects">Projects</a>
+      <a href="#programs">Programs</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main>
+    <!-- Profile Hero -->
+    <section class="profile-hero">
+      <div class="container narrow">
+        <h1>Tentang Extreme Studios</h1>
+        <p style="color: var(--text-soft); font-size: 1.1rem; line-height: 1.75;">
+          Extreme Studios adalah studio teknologi yang berfokus pada pengembangan Artificial Intelligence, software, aplikasi Android, dan solusi digital. Kami membangun dari sebuah ide hingga menjadi produk yang dapat digunakan.
+        </p>
+      </div>
+    </section>
+
+    <!-- Visual Divider -->
+    <section class="profile-visual-divider" style="padding: 2rem 0; display: flex; justify-content: center; align-items: center;">
+      <div style="width: 100%; max-width: 900px; height: 280px; position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: linear-gradient(135deg, #060b18 0%, #0e1630 60%, #08122b 100%); padding: 2.5rem;">
+        <svg viewBox="0 0 800 240" style="width: 100%; height: 100%; opacity: 0.9;" aria-label="Abstract technology circuit">
+          <defs>
+            <linearGradient id="vgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#00eaff" stop-opacity="0.1"/>
+              <stop offset="100%" stop-color="#00eaff" stop-opacity="0.02"/>
+            </linearGradient>
+          </defs>
+          <path d="M 0 120 Q 200 60 400 120 T 800 120" fill="none" stroke="#00eaff" stroke-width="1" opacity="0.25"/>
+          <path d="M 0 140 Q 250 100 500 140 T 800 140" fill="none" stroke="#00eaff" stroke-width="0.5" opacity="0.2"/>
+          <path d="M 0 100 Q 300 140 600 100 T 800 100" fill="none" stroke="#00eaff" stroke-width="0.5" opacity="0.15"/>
+          <circle cx="400" cy="120" r="4" fill="#00eaff" opacity="0.7"/>
+          <circle cx="250" cy="110" r="3" fill="#00eaff" opacity="0.4"/>
+          <circle cx="550" cy="135" r="3" fill="#00eaff" opacity="0.4"/>
+          <line x1="400" y1="120" x2="250" y2="110" stroke="#00eaff" stroke-width="0.5" opacity="0.3"/>
+          <line x1="400" y1="120" x2="550" y2="135" stroke="#00eaff" stroke-width="0.5" opacity="0.3"/>
+          <rect x="350" y="100" width="100" height="40" rx="8" fill="none" stroke="#00eaff" stroke-width="0.75" opacity="0.2"/>
+          <text x="400" y="127" text-anchor="middle" fill="#00eaff" font-family="Space Grotesk, sans-serif" font-size="12" opacity="0.6" letter-spacing="4">ENGINEERING</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="profile-section">
+      <div class="container narrow">
+        <h2>AI Engineering</h2>
+        <p>
+          Kami merancang dan mengembangkan sistem berbasis kecerdasan buatan yang dapat membantu proses bisnis, analisis data, dan interaksi pengguna. Fokus kami bukan hanya pada teknologi, tetapi pada bagaimana AI dapat diterapkan secara praktis dan berkelanjutan.
+        </p>
+      </div>
+    </section>
+
+    <section class="profile-section">
+      <div class="container narrow">
+        <h2>Software Development</h2>
+        <p>
+          Pengembangan aplikasi desktop dan backend yang kokoh, terstruktur, dan mudah dipelihara. Kami menggunakan pendekatan engineering yang berorientasi pada kualitas kode dan kecepatan pengembangan.
+        </p>
+      </div>
+    </section>
+
+    <section class="profile-section">
+      <div class="container narrow">
+        <h2>Android Development</h2>
+        <p>
+          Aplikasi Android yang kami kembangkan dirancang untuk berjalan dengan baik pada berbagai perangkat. Kami memastikan pengalaman pengguna tetap lancar dan responsif.
+        </p>
+      </div>
+    </section>
+
+    <section class="profile-section">
+      <div class="container narrow">
+        <h2>Web Development</h2>
+        <p>
+          Website dan aplikasi web yang responsif, cepat, dan mudah digunakan. Kami menerapkan desain minimalis dan modern yang sesuai dengan identitas brand.
+        </p>
+      </div>
+    </section>
+
+    <section class="profile-section">
+      <div class="container narrow">
+        <h2>AI Automation</h2>
+        <p>
+          Otomatisasi proses menggunakan AI untuk meningkatkan efisiensi dan mengurangi pekerjaan manual. Kami membantu organisasi mengintegrasikan AI ke dalam alur kerja mereka.
+        </p>
+      </div>
+    </section>
+
+    <section class="profile-section">
+      <div class="container narrow">
+        <h2>Research &amp; Development</h2>
+        <p>
+          Eksplorasi teknologi baru dan pengembangan prototipe. R&amp;D adalah bagian penting dari proses kami untuk memastikan solusi yang kami bangun tetap relevan dan inovatif.
+        </p>
+      </div>
+    </section>
+
+    <section class="profile-section">
+      <div class="container narrow">
+        <h2>AI Education</h2>
+        <p>
+          Program pelatihan dan pengenalan AI untuk berbagai tingkat, termasuk siswa sekolah dasar hingga profesional. Kami percaya bahwa pemahaman teknologi harus dapat diakses oleh semua kalangan.
+        </p>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="profile-section" style="padding-top: 3rem;">
+      <div class="container">
+        <h2>Proses Pengembangan</h2>
+        <p>Setiap proyek dimulai dari sebuah ide, melalui eksplorasi, engineering, pengujian, hingga menjadi produk yang siap digunakan.</p>
+        <div class="process-flow">
+          <div class="process-step">IDE</div>
+          <span class="process-arrow">→</span>
+          <div class="process-step">EXPERIMENT</div>
+          <span class="process-arrow">→</span>
+          <div class="process-step">ENGINEERING</div>
+          <span class="process-arrow">→</span>
+          <div class="process-step">TESTING</div>
+          <span class="process-arrow">→</span>
+          <div class="process-step">PRODUCT</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Capabilities -->
+    <section class="profile-section">
+      <div class="container">
+        <h2>Kemampuan dan Teknologi</h2>
+        <div class="cap-grid">
+          <div class="cap-item">
+            <h4>Artificial Intelligence</h4>
+            <p>Model prediktif, klasifikasi, dan pengolahan bahasa alami.</p>
+          </div>
+          <div class="cap-item">
+            <h4>Android Studio</h4>
+            <p>Pengembangan aplikasi native dan optimasi performa.</p>
+          </div>
+          <div class="cap-item">
+            <h4>Web Technologies</h4>
+            <p>Frontend responsif dan backend yang stabil.</p>
+          </div>
+          <div class="cap-item">
+            <h4>Prompt Engineering</h4>
+            <p>Pengembangan prompt yang presisi untuk hasil AI yang akurat.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Programs -->
+    <section class="profile-section" id="programs">
+      <div class="container">
+        <h2>Programs &amp; Events</h2>
+        <p>Program pelatihan AI Engineer Basic untuk siswa SD Kelas 4–6. Program ini menjadi salah satu bagian dari aktivitas Extreme Studios.</p>
+        <div style="margin-top: 2rem;">
+          <a href="program.html" class="btn btn-secondary">LIHAT INFORMASI PELATIHAN</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Contact Footer -->
+  <footer class="contact" id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-brand">
+          <h2>EXTREME STUDIOS</h2>
+          <p>AI Engineering &amp; Software Development</p>
+        </div>
+        <div class="contact-info">
+          <p>WhatsApp: <a href="https://wa.me/6289677523666">0896-7752-3666</a></p>
+          <p>Fajar</p>
+          <a href="https://extremestudiosai.com" class="contact-domain">extremestudiosai.com</a>
+        </div>
+      </div>
+      <div class="contact-bottom">
+        <p>© 2026 Extreme Studios. Dibangun dengan presisi.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
