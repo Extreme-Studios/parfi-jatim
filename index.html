@@ -1,155 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Extreme Studios — AI Engineering &amp; Software Development</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portal informasi Pengurus Daerah PARFI Jawa Timur.">
+  <meta property="og:title" content="PARFI Jawa Timur — Ruang untuk Insan Film">
+  <meta property="og:description" content="Berita dan informasi Pengurus Daerah PARFI Jawa Timur.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/og-parfi-jatim.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>PARFI Jawa Timur — Ruang untuk Insan Film</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <div class="grain"></div>
+  <header class="site-header">
+    <a class="brand" href="#beranda" aria-label="PARFI Jawa Timur, beranda">
+      <img src="assets/images/logo-parfi-asli.jpeg" alt="Logo PARFI">
+      <span><b>PARFI</b><small>JAWA TIMUR</small></span>
+    </a>
+    <button class="menu-button" aria-label="Buka menu" aria-expanded="false">Menu</button>
+    <nav aria-label="Navigasi utama">
+      <a href="#tentang">Tentang</a><a href="#berita">Berita</a><a href="#agenda">Agenda</a><a class="nav-cta" href="#gabung">Gabung PARFI</a>
+    </nav>
+  </header>
 
-  <!-- Subtle background grid -->
-  <div class="bg-grid"></div>
-
-  <!-- Navigation -->
-  <nav class="navbar" id="navbar">
-    <a href="index.html" class="nav-logo">EXTREME STUDIOS</a>
-    <div class="nav-links" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="profile.html">Profile</a>
-      <a href="#projects">Projects</a>
-      <a href="#programs">Programs</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <main>
-    <!-- HERO -->
-    <section class="hero" id="hero">
-      <div class="hero-inner">
-        <div class="hero-text">
-          <h1>EXTREME STUDIOS</h1>
-          <p class="hero-sub">AI Engineering &amp; Software Development</p>
-          <h2 class="hero-headline">
-            <span>Membangun Teknologi.</span>
-            <span>Mengembangkan Ide.</span>
-            <span>Menciptakan Solusi.</span>
-          </h2>
-          <p class="hero-desc">
-            Extreme Studios adalah studio teknologi yang berfokus pada pengembangan Artificial Intelligence, software, aplikasi Android, dan solusi digital.
-          </p>
-          <div class="hero-cta">
-            <a href="profile.html" class="btn btn-primary">KENALI EXTREME STUDIOS</a>
-            <a href="#projects" class="btn btn-ghost">LIHAT PROJECT</a>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <img src="assets/images/hero_ai.jpg" alt="Abstract AI Engineering" class="hero-img" style="max-width:420px; width:100%; border-radius:20px; opacity:0.9; box-shadow:0 0 60px 10px rgba(0,234,255,0.1);">
-        </div>
+  <main id="beranda">
+    <section class="hero">
+      <div class="hero-reel" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow">PENGURUS DAERAH • JAWA TIMUR</p>
+        <h1>Film adalah cara kita <em>mengingat.</em></h1>
+        <p class="lead">PARFI Jawa Timur menghubungkan insan film, merawat cerita lokal, dan membuka jalan bagi karya dari Jawa Timur untuk bertemu penontonnya.</p>
+        <div class="hero-actions"><a class="button gold" href="#berita">Lihat kabar terbaru</a><a class="text-link" href="#tentang">Kenal PARFI Jatim <span>↗</span></a></div>
+      </div>
+      <div class="hero-visual">
+        <div class="frame-label">JAWA TIMUR / INDONESIA</div>
+        <div class="mask-stage"><img src="assets/images/logo-parfi-asli.jpeg" alt="Logo resmi Persatuan Artis Film Indonesia"></div>
+        <p class="stage-caption">PERSATUAN ARTIS FILM INDONESIA<br><b>JAWA TIMUR</b></p>
       </div>
     </section>
 
-    <!-- PROFILE PREVIEW -->
-    <section class="section profile-preview" id="profile">
-      <div class="container narrow">
-        <h2 class="section-title">Kami Membangun Teknologi dari Sebuah Ide.</h2>
-        <p class="section-body">
-          Extreme Studios mengembangkan software, aplikasi, dan teknologi berbasis Artificial Intelligence melalui proses eksplorasi, engineering, pengujian, dan pengembangan produk.
-        </p>
-        <a href="profile.html" class="btn btn-secondary">LIHAT PROFILE LENGKAP</a>
+    <section class="ticker" aria-label="Informasi utama"><span>PARFI JATIM</span><i></i><p>Merawat karya. Menguatkan profesi. Mengangkat cerita daerah.</p><i></i><span>SEJAK 1956</span></section>
+
+    <section class="about section" id="tentang">
+      <div class="section-kicker"><span>01</span> TENTANG KAMI</div>
+      <div class="about-main"><h2>Rumah bersama bagi <em>insan perfilman</em> Jawa Timur.</h2><div><p>PARFI hadir untuk pengayoman, pembinaan, dan peningkatan kapasitas seniman film. Di Jawa Timur, kami bergerak bersama untuk membangun ekosistem yang profesional, berintegritas, dan berakar pada kekayaan budaya daerah.</p><a class="text-link" href="#gabung">Selengkapnya tentang PARFI <span>↗</span></a></div></div>
+      <div class="principles"><div><b>PROFESI</b><p>Menguatkan kapasitas, jaringan, dan kesejahteraan insan film.</p></div><div><b>KARYA</b><p>Mendorong produksi, promosi, dan distribusi film daerah.</p></div><div><b>BUDAYA</b><p>Menghidupkan cerita dan kearifan lokal Jawa Timur di layar.</p></div></div>
+    </section>
+
+    <section class="news section" id="berita">
+      <div class="section-top"><div class="section-kicker"><span>02</span> BERITA TERBARU</div><a class="text-link" href="#berita">Arsip berita <span>↗</span></a></div>
+      <article class="featured-story">
+        <div class="story-mark">HEADLINE<br><span>JUNI 2026</span></div>
+        <div><p class="category">ORGANISASI &amp; EKRAF</p><h2>PARFI Jatim perkuat organisasi dan ekonomi kreatif film.</h2><p>Digitalisasi data anggota, penataan administrasi, penguatan pengurus cabang, pendidikan, produksi, promosi, hingga distribusi karya menjadi arah kerja organisasi.</p><a href="https://mili.id/baca-24946-parfi-jatim-perkuat-organisasi-dan-ekonomi-kreatif-film-fokus-pada-digitalisasi-anggota-hingga-pengembangan-industri" target="_blank" rel="noopener" class="story-link">Baca sumber berita <span>↗</span></a></div>
+      </article>
+      <div class="story-grid">
+        <article><p class="category">SILATURAHMI • 21 JUN 2026</p><h3>Film berbasis kearifan lokal: mengangkat sejarah setiap daerah.</h3><p>Sembilan PC PARFI dan pengurus daerah berkumpul di Singosari untuk menyatukan visi dan membahas potensi cerita lokal.</p><a href="https://www.bangsaonline.com/berita/163387/parfi-jatim-gelar-silaturahmi-dorong-film-berbasis-kearifan-lokal-imawan-angkat-sejarah-daerah" target="_blank" rel="noopener">Baca berita <span>↗</span></a></article>
+        <article><p class="category">EKOSISTEM FILM • 25 MEI 2026</p><h3>PARFI Jatim dukung usulan 1.000 bioskop desa.</h3><p>Akses tayang yang lebih merata dinilai dapat membuka ruang distribusi bagi karya sineas daerah dan ekonomi kreatif lokal.</p><a href="https://jatimupdate.id/baca-16995-parfi-jawa-timur-sambut-positif-usulan-1000-bioskop-desa" target="_blank" rel="noopener">Baca berita <span>↗</span></a></article>
       </div>
     </section>
 
-    <!-- FEATURED PROJECTS -->
-    <section class="section projects" id="projects">
-      <div class="container">
-        <h2 class="section-title">Project Unggulan</h2>
-        <div class="project-grid">
-          <article class="project-card">
-            <a href="#" class="project-link" aria-label="DIANA Smart Assistant">
-              <div class="project-visual">
-                <img src="assets/images/project_diana.jpg" alt="DIANA Smart Assistant" style="width:100%; height:260px; object-fit:cover; border-radius:0;">
-              </div>
-              <div class="project-info">
-                <h3>DIANA Smart Assistant</h3>
-                <p class="project-category">AI Engineering</p>
-              </div>
-            </a>
-          </article>
-          <article class="project-card">
-            <a href="#" class="project-link" aria-label="Extreme Studios Guitar FX">
-              <div class="project-visual">
-                <img src="assets/images/project_guitar.jpg" alt="Extreme Studios Guitar FX" style="width:100%; height:260px; object-fit:cover; border-radius:0;">
-              </div>
-              <div class="project-info">
-                <h3>Extreme Studios Guitar FX</h3>
-                <p class="project-category">Android / Audio Technology</p>
-              </div>
-            </a>
-          </article>
-          <article class="project-card">
-            <a href="#" class="project-link" aria-label="Movie HUB">
-              <div class="project-visual">
-                <img src="assets/images/project_movie.jpg" alt="Movie HUB" style="width:100%; height:260px; object-fit:cover; border-radius:0;">
-              </div>
-              <div class="project-info">
-                <h3>Movie HUB</h3>
-                <p class="project-category">Android / Entertainment</p>
-              </div>
-            </a>
-          </article>
-        </div>
-        <div class="cta-wrap">
-          <a href="#" class="btn btn-ghost">LIHAT SEMUA PROJECT</a>
-        </div>
-      </div>
-    </section>
+    <section class="agenda section" id="agenda"><div class="section-kicker"><span>03</span> ARAH GERAK</div><div class="agenda-list"><div><span>01</span><h3>Digitalisasi anggota</h3><p>Data dan KTA anggota yang tertib, modern, dan terhubung.</p></div><div><span>02</span><h3>Ruang belajar &amp; produksi</h3><p>Diklat dan pengembangan karya untuk insan perfilman daerah.</p></div><div><span>03</span><h3>Jejaring &amp; distribusi</h3><p>Mendorong karya Jawa Timur menjangkau masyarakat lebih luas.</p></div></div></section>
 
-    <!-- PROGRAM -->
-    <section class="section programs" id="programs">
-      <div class="container">
-        <h2 class="section-title">Programs &amp; Events</h2>
-        <div class="program-card">
-          <div class="program-label">Program Sedang Berjalan</div>
-          <h3>PELATIHAN AI ENGINEER BASIC</h3>
-          <p>Untuk Siswa SD Kelas 4–6. Program pengenalan Artificial Intelligence dan pembuatan aplikasi Android dengan bantuan AI dan Android Studio.</p>
-          <div class="program-meta">
-            <span>4x Pertemuan</span>
-            <span>1 Jam / Pertemuan</span>
-            <span>Rp250.000 / Siswa</span>
-            <span>Kuota: 5–10 Siswa</span>
-          </div>
-          <a href="program.html" class="btn btn-secondary">LIHAT INFORMASI PELATIHAN</a>
-        </div>
-      </div>
-    </section>
+    <section class="join" id="gabung"><p class="eyebrow">BERSAMA, KITA BIKIN FILM BICARA</p><h2>Punya cerita untuk<br><em>Jawa Timur?</em></h2><p>Ikuti kabar, agenda, dan perkembangan PARFI Jawa Timur melalui kanal resmi organisasi.</p><a class="button gold" href="mailto:info@parfijatim.id">Hubungi PARFI Jatim</a></section>
   </main>
-
-  <!-- CONTACT FOOTER -->
-  <footer class="contact" id="contact">
-    <div class="container">
-      <div class="contact-inner">
-        <div class="contact-brand">
-          <h2>EXTREME STUDIOS</h2>
-          <p>AI Engineering &amp; Software Development</p>
-        </div>
-        <div class="contact-info">
-          <p>WhatsApp: <a href="https://wa.me/6289677523666">0896-7752-3666</a></p>
-          <p>Fajar</p>
-          <a href="https://extremestudiosai.com" class="contact-domain">extremestudiosai.com</a>
-        </div>
-      </div>
-      <div class="contact-bottom">
-        <p>© 2026 Extreme Studios. Dibangun dengan presisi.</p>
-      </div>
-    </div>
-  </footer>
-
+  <footer><a class="brand" href="#beranda"><img src="assets/images/logo-parfi-asli.jpeg" alt="Logo PARFI"><span><b>PARFI</b><small>JAWA TIMUR</small></span></a><p>Persatuan Artis Film Indonesia<br>Pengurus Daerah Jawa Timur</p><p>© 2026 PARFI Jawa Timur</p></footer>
+  <script>
+    const button=document.querySelector('.menu-button'), nav=document.querySelector('nav');
+    button.addEventListener('click',()=>{const expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',!expanded);nav.classList.toggle('open');});
+  </script>
 </body>
 </html>
