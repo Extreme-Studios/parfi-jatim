@@ -1,5 +1,10 @@
 {
   "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" }
+    { "source": "/admin", "destination": "/admin.html" },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "panel.parfi-jatim.extremestudiosai.com" }],
+      "destination": "/admin.html"
+    }
   ]
 }
