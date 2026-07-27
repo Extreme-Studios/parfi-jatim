@@ -151,13 +151,13 @@
         <div class="story-mark">HEADLINE<br><span>JUNI 2026</span></div>
         <div><p class="category">ORGANISASI &amp; EKRAF</p><h2>PARFI Jatim perkuat organisasi dan ekonomi kreatif film.</h2><p>Digitalisasi data anggota, penataan administrasi, penguatan pengurus cabang, pendidikan, produksi, promosi, hingga distribusi karya menjadi arah kerja organisasi.</p><a href="https://mili.id/baca-24946-parfi-jatim-perkuat-organisasi-dan-ekonomi-kreatif-film-fokus-pada-digitalisasi-anggota-hingga-pengembangan-industri" target="_blank" rel="noopener" class="story-link">Baca sumber berita <span>↗</span></a></div>
       </article>
-      <div class="story-grid">
+      <div class="story-grid" id="newsFeed">
         <article><p class="category">SILATURAHMI • 21 JUN 2026</p><h3>Film berbasis kearifan lokal: mengangkat sejarah setiap daerah.</h3><p>Sembilan PC PARFI dan pengurus daerah berkumpul di Singosari untuk menyatukan visi dan membahas potensi cerita lokal.</p><a href="https://www.bangsaonline.com/berita/163387/parfi-jatim-gelar-silaturahmi-dorong-film-berbasis-kearifan-lokal-imawan-angkat-sejarah-daerah" target="_blank" rel="noopener">Baca berita <span>↗</span></a></article>
         <article><p class="category">EKOSISTEM FILM • 25 MEI 2026</p><h3>PARFI Jatim dukung usulan 1.000 bioskop desa.</h3><p>Akses tayang yang lebih merata dinilai dapat membuka ruang distribusi bagi karya sineas daerah dan ekonomi kreatif lokal.</p><a href="https://jatimupdate.id/baca-16995-parfi-jawa-timur-sambut-positif-usulan-1000-bioskop-desa" target="_blank" rel="noopener">Baca berita <span>↗</span></a></article>
       </div>
     </section>
 
-    <section class="agenda section" id="agenda"><div class="section-kicker"><span>05</span> ARAH GERAK</div><div class="agenda-list"><div><span>01</span><h3>Digitalisasi anggota</h3><p>Data dan KTA anggota yang tertib, modern, dan terhubung.</p></div><div><span>02</span><h3>Ruang belajar &amp; produksi</h3><p>Diklat dan pengembangan karya untuk insan perfilman daerah.</p></div><div><span>03</span><h3>Jejaring &amp; distribusi</h3><p>Mendorong karya Jawa Timur menjangkau masyarakat lebih luas.</p></div></div></section>
+    <section class="agenda section" id="agenda"><div class="section-kicker"><span>05</span> AGENDA KEGIATAN</div><div class="agenda-list" id="eventFeed"><div><span>01</span><h3>Digitalisasi anggota</h3><p>Data dan KTA anggota yang tertib, modern, dan terhubung.</p></div><div><span>02</span><h3>Ruang belajar &amp; produksi</h3><p>Diklat dan pengembangan karya untuk insan perfilman daerah.</p></div><div><span>03</span><h3>Jejaring &amp; distribusi</h3><p>Mendorong karya Jawa Timur menjangkau masyarakat lebih luas.</p></div></div></section>
 
     <section class="join" id="gabung"><p class="eyebrow">BERSAMA, KITA BIKIN FILM BICARA</p><h2>Punya cerita untuk<br><em>Jawa Timur?</em></h2><p>Ikuti kabar, agenda, dan perkembangan PARFI Jawa Timur melalui kanal resmi organisasi.</p><a class="button gold" href="#berita">Ikuti kabar terbaru</a></section>
     <section class="contact-strip" id="kontak" aria-label="Kontak PARFI Jawa Timur"><div class="contact-strip-inner"><div><div class="section-kicker"><span>06</span> KONTAK</div><h2>Terhubung dengan <em>PARFI Jatim.</em></h2></div><div class="contact-detail"><small>SEKRETARIAT</small><p>Ruko Tidar Mas Square Blok A-11, Jalan Tidar 308-310, Surabaya, Jawa Timur</p></div><div class="contact-detail"><small>WHATSAPP KETUA PD</small><p><a href="https://wa.me/6282119970090" target="_blank" rel="noopener">+62 821-1997-0090</a><br>Wira Lina</p></div></div></section>
@@ -168,5 +168,6 @@
     button.addEventListener('click',()=>{const expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',!expanded);nav.classList.toggle('open');});
     nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{button.setAttribute('aria-expanded','false');nav.classList.remove('open');}));
   </script>
+  <script src="assets/cms-feed.js"></script>
 </body>
 </html>
