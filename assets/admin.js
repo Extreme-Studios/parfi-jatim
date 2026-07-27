@@ -13,7 +13,7 @@ const dateText = value => value ? new Intl.DateTimeFormat('id-ID', { dateStyle: 
 function switchView(view) {
   ['home','news','event'].forEach(name => $(`#${name}View`).classList.toggle('hidden', name !== view));
   document.querySelectorAll('.nav-link').forEach(button => button.classList.toggle('active', button.dataset.view === view));
-  const labels = { home: ['DASBOR','Selamat datang.'], news: ['KONTEN','Berita PARFI Jatim'], event: ['AGENDA','Event & kegiatan'] };
+  const labels = { home: ['DASBOR','Selamat datang.'], news: ['KONTEN','Berita PARFI Jatim'], event: ['AGENDA','Agenda PARFI'] };
   $('#viewKicker').textContent = labels[view][0]; $('#viewTitle').textContent = labels[view][1];
 }
 
@@ -24,9 +24,9 @@ function normalize(item, type) {
 function render() {
   const all = [...state.news.map(item => ({ ...normalize(item, 'news'), type:'news' })), ...state.events.map(item => ({ ...normalize(item, 'event'), type:'event' }))].sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
   $('#newsCount').textContent = state.news.length; $('#eventCount').textContent = state.events.length; $('#publishedCount').textContent = all.filter(item => item.status === 'PUBLISH').length;
-  $('#recentList').innerHTML = all.length ? all.slice(0,5).map(item => itemRow(item, true)).join('') : '<p class="empty">Belum ada konten. Tambahkan berita atau event pertama.</p>';
+  $('#recentList').innerHTML = all.length ? all.slice(0,5).map(item => itemRow(item, true)).join('') : '<p class="empty">Belum ada konten. Tambahkan berita atau agenda pertama.</p>';
   $('#newsList').innerHTML = state.news.length ? state.news.map(item => itemRow({ ...normalize(item,'news'), type:'news' })).join('') : '<p class="empty">Belum ada berita.</p>';
-  $('#eventList').innerHTML = state.events.length ? state.events.map(item => itemRow({ ...normalize(item,'event'), type:'event' })).join('') : '<p class="empty">Belum ada event atau agenda.</p>';
+  $('#eventList').innerHTML = state.events.length ? state.events.map(item => itemRow({ ...normalize(item,'event'), type:'event' })).join('') : '<p class="empty">Belum ada agenda.</p>';
   document.querySelectorAll('[data-edit]').forEach(button => button.addEventListener('click', () => openEditor(button.dataset.edit, button.dataset.type)));
 }
 
@@ -48,7 +48,7 @@ function openEditor(type, id = '') {
   const form = $('#editorForm'); form.reset(); form.elements.type.value = type; form.elements.id.value = item?.id || ''; form.elements.image_url.value = item?.image_url || ''; form.elements.image_drive_id.value = item?.image_drive_id || '';
   form.elements.title.value = item?.title || ''; form.elements.date.value = item?.date || ''; form.elements.end_date.value = item?.end_date || ''; form.elements.location.value = item?.location || ''; form.elements.summary.value = item?.summary || ''; form.elements.description.value = item?.description || ''; form.elements.status.value = item?.status || 'PUBLISH';
   document.querySelectorAll('.event-only').forEach(element => element.style.display = type === 'event' ? 'grid' : 'none');
-  $('#editorKicker').textContent = type === 'event' ? 'EVENT & AGENDA' : 'BERITA'; $('#editorTitle').textContent = item ? `Edit ${type === 'event' ? 'event' : 'berita'}` : `Tambah ${type === 'event' ? 'event' : 'berita'}`; $('#saveButton').textContent = form.elements.status.value === 'DRAFT' ? 'Simpan draft' : 'Simpan & publish'; $('#editorMessage').textContent = '';
+  $('#editorKicker').textContent = type === 'event' ? 'AGENDA PARFI' : 'BERITA'; $('#editorTitle').textContent = item ? `Edit ${type === 'event' ? 'agenda' : 'berita'}` : `Tambah ${type === 'event' ? 'agenda' : 'berita'}`; $('#saveButton').textContent = form.elements.status.value === 'DRAFT' ? 'Simpan draft' : 'Simpan & publish'; $('#editorMessage').textContent = '';
   $('#editorDialog').showModal();
 }
 
