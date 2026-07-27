@@ -27,6 +27,8 @@ function dispatch_(payload) {
     if (action === 'list') return { ok: true, items: list_(payload.type, false) };
     if (action === 'save') return save_(payload, session);
     if (action === 'delete') return remove_(payload, session);
+    if (action === 'get_pengurus') return getPengurus_(session);
+    if (action === 'save_pengurus') return savePengurus_(payload, session);
     return { ok: false, error: 'Aksi tidak dikenali.' };
   } catch (error) {
     console.error(error && error.stack ? error.stack : error);
@@ -41,7 +43,6 @@ function login_(payload) {
 
   const rows = values_('Admin');
   const headers = rows.shift() || [];
-  const index = index_(headers);
   const account = rows.map(row => row_(headers, row)).find(item =>
     String(item.username || '').toLowerCase() === username && String(item.aktif || '').toUpperCase() === 'YA'
   );
@@ -50,9 +51,45 @@ function login_(payload) {
   }
 
   const token = Utilities.getUuid().replace(/-/g, '') + Utilities.getUuid().replace(/-/g, '');
-  const session = { username: account.username, nama: account.nama || account.username, expires: Date.now() + CMS.sessionHours * 60 * 60 * 1000 };
+  const session = { username: account.username, nama: account.nama || account.username, role: String(account.role || 'PENGURUS').toUpperCase(), expires: Date.now() + CMS.sessionHours * 60 * 60 * 1000 };
   PropertiesService.getScriptProperties().setProperty('session_' + token, JSON.stringify(session));
-  return { ok: true, token: token, user: { username: session.username, nama: session.nama } };
+  return { ok: true, token: token, user: { username: session.username, nama: session.nama, role: session.role } };
+}
+
+function requireMaster_(session) {
+  if (session.role !== 'MASTER') throw new Error('Akses pengaturan akun tidak tersedia.');
+}
+
+function getPengurus_(session) {
+  requireMaster_(session);
+  const rows = values_('Admin');
+  const headers = rows.shift() || [];
+  const account = rows.map(row => row_(headers, row)).find(item => String(item.role || 'PENGURUS').toUpperCase() === 'PENGURUS');
+  if (!account) throw new Error('Akun Pengurus tidak ditemukan.');
+  return { ok: true, account: { username: account.username || '', nama: account.nama || '', aktif: String(account.aktif || '').toUpperCase() === 'YA' } };
+}
+
+function savePengurus_(payload, session) {
+  requireMaster_(session);
+  const data = payload.data || {};
+  const username = clean_(data.username, 80).toLowerCase();
+  const nama = clean_(data.nama, 120);
+  const password = String(data.password || '');
+  if (!username || !nama) throw new Error('Username dan nama Pengurus wajib diisi.');
+  if (password && password.length < 8) throw new Error('Password Pengurus minimal 8 karakter.');
+
+  const sheet = SpreadsheetApp.openById(CMS.spreadsheetId).getSheetByName('Admin');
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const rows = sheet.getLastRow() > 1 ? sheet.getRange(2, 1, sheet.getLastRow() - 1, headers.length).getValues() : [];
+  const position = rows.findIndex(row => String(row_(headers, row).role || 'PENGURUS').toUpperCase() === 'PENGURUS');
+  if (position < 0) throw new Error('Akun Pengurus tidak ditemukan.');
+  const rowNumber = position + 2;
+  const current = row_(headers, rows[position]);
+  const duplicate = rows.some((row, index) => index !== position && String(row_(headers, row).username || '').toLowerCase() === username);
+  if (duplicate) throw new Error('Username tersebut sudah dipakai.');
+  const record = { username: username, nama: nama, password_hash: password ? sha256_(password) : current.password_hash, aktif: data.aktif ? 'YA' : 'TIDAK', role: 'PENGURUS' };
+  sheet.getRange(rowNumber, 1, 1, headers.length).setValues([headers.map(header => record[header] === undefined ? current[header] || '' : record[header])]);
+  return { ok: true, account: { username: username, nama: nama, aktif: record.aktif === 'YA' } };
 }
 
 function logout_(token) {

@@ -11,10 +11,11 @@ const status = value => `<span class="status ${value === 'DRAFT' ? 'draft' : ''}
 const dateText = value => value ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium' }).format(new Date(`${value}T00:00:00`)) : 'Tanpa tanggal';
 
 function switchView(view) {
-  ['home','news','event'].forEach(name => $(`#${name}View`).classList.toggle('hidden', name !== view));
+  ['home','news','event','settings'].forEach(name => $(`#${name}View`).classList.toggle('hidden', name !== view));
   document.querySelectorAll('.nav-link').forEach(button => button.classList.toggle('active', button.dataset.view === view));
-  const labels = { home: ['DASBOR','Selamat datang.'], news: ['KONTEN','Berita PARFI Jatim'], event: ['AGENDA','Agenda PARFI'] };
+  const labels = { home: ['DASBOR','Selamat datang.'], news: ['KONTEN','Berita PARFI Jatim'], event: ['AGENDA','Agenda PARFI'], settings: ['PENGATURAN','Akun Pengurus'] };
   $('#viewKicker').textContent = labels[view][0]; $('#viewTitle').textContent = labels[view][1];
+  if (view === 'settings') loadPengurus();
 }
 
 function normalize(item, type) {
@@ -73,8 +74,19 @@ async function login(event) {
   catch (error) { message.textContent = error.message; } finally { button.disabled = false; }
 }
 function logout() { sessionStorage.removeItem('parfiCmsToken'); sessionStorage.removeItem('parfiCmsUser'); state.token = ''; state.user = null; $('#appView').classList.add('hidden'); $('#loginView').classList.remove('hidden'); }
-function showApp() { $('#loginView').classList.add('hidden'); $('#appView').classList.remove('hidden'); $('#userName').textContent = state.user?.nama || 'Administrator'; refresh(); }
+function showApp() { $('#loginView').classList.add('hidden'); $('#appView').classList.remove('hidden'); $('#userName').textContent = state.user?.nama || 'Administrator'; document.querySelectorAll('.master-only').forEach(element => element.classList.toggle('hidden', state.user?.role !== 'MASTER')); refresh(); }
 
-$('#loginForm').addEventListener('submit', login); $('#editorForm').addEventListener('submit', saveEditor); $('#closeEditor').addEventListener('click', () => $('#editorDialog').close()); $('#cancelEditor').addEventListener('click', () => $('#editorDialog').close()); $('#logoutButton').addEventListener('click', async () => { try { await api('logout'); } finally { logout(); } });
+async function loadPengurus() {
+  try { const data = await api('get_pengurus'); const form = $('#pengurusForm'); form.elements.username.value = data.account.username; form.elements.nama.value = data.account.nama; form.elements.aktif.value = data.account.aktif ? 'YA' : 'TIDAK'; }
+  catch (error) { $('#pengurusMessage').textContent = error.message; }
+}
+
+async function savePengurus(event) {
+  event.preventDefault(); const form = event.currentTarget; const button = form.querySelector('button[type="submit"]'); const message = $('#pengurusMessage');
+  try { button.disabled = true; message.textContent = 'Menyimpan...'; await api('save_pengurus', { data: Object.fromEntries(new FormData(form).entries()) }); form.elements.password.value = ''; message.textContent = 'Akun Pengurus sudah diperbarui.'; }
+  catch (error) { message.textContent = error.message; } finally { button.disabled = false; }
+}
+
+$('#loginForm').addEventListener('submit', login); $('#editorForm').addEventListener('submit', saveEditor); $('#pengurusForm').addEventListener('submit', savePengurus); $('#closeEditor').addEventListener('click', () => $('#editorDialog').close()); $('#cancelEditor').addEventListener('click', () => $('#editorDialog').close()); $('#logoutButton').addEventListener('click', async () => { try { await api('logout'); } finally { logout(); } });
 document.querySelectorAll('.nav-link').forEach(button => button.addEventListener('click', () => switchView(button.dataset.view))); document.querySelectorAll('[data-new]').forEach(button => button.addEventListener('click', () => openEditor(button.dataset.new))); document.querySelectorAll('[data-view-target]').forEach(button => button.addEventListener('click', () => switchView(button.dataset.viewTarget))); $('#editorForm').elements.status.addEventListener('change', event => $('#saveButton').textContent = event.target.value === 'DRAFT' ? 'Simpan draft' : 'Simpan & publish');
 if (state.token && state.user) showApp();
