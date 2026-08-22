@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/struktur-pd-parfi-jatim.html",
+      "destination": "/preview-struktur.html",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/admin", "destination": "/admin.html" },
     {
