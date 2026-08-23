@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Preview desain beranda PARFI Jawa Timur.">
+  <title>Preview — PARFI Jawa Timur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/preview-beranda-emas.css">
+</head>
+<body>
+  <main class="preview-shell">
+    <p class="preview-note">PREVIEW DESAIN — BELUM DITERAPKAN DI BERANDA UTAMA</p>
+    <header class="site-header">
+      <a class="brand" href="#beranda" aria-label="PARFI Jawa Timur">
+        <img src="assets/images/logo-parfi-asli.jpeg" alt="Logo asli PARFI Jawa Timur">
+        <span>PD PARFI JATIM</span>
+      </a>
+      <button class="nav-toggle" aria-label="Buka navigasi" aria-expanded="false">Menu</button>
+      <nav class="site-nav" aria-label="Navigasi utama">
+        <a class="active" href="#beranda">Beranda</a><a href="#profil">Profil</a><a href="preview-struktur.html">Pengurus</a><a href="#program">Program Kerja</a><a href="#kegiatan">Kegiatan</a><a href="#berita">Berita</a><a href="#galeri">Galeri</a><a href="#biro">Biro</a><a href="#anggota">Keanggotaan</a><a href="#kontak">Kontak</a>
+      </nav>
+      <a class="join-link" href="#anggota"><span>● ● ●</span> Gabung PARFI</a>
+    </header>
+
+    <section class="hero" id="beranda">
+      <div class="hero-image" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="hero-kicker">SELAMAT DATANG DI WEBSITE RESMI</p>
+        <h1>PD PARFI <strong>JAWA TIMUR</strong></h1>
+        <p class="hero-subtitle">Persatuan Artis Film Indonesia</p>
+        <span class="ornament">✦</span>
+        <p class="hero-tagline">BERSATU <i>•</i> BERKARYA <i>•</i> BERBUDAYA <i>•</i> MEMBANGUN EKOSISTEM<br>PERFILMAN JAWA TIMUR</p>
+        <div class="hero-actions"><a class="button solid" href="#profil">Kenal PARFI Jatim <b>→</b></a><a class="button outline" href="#program">Lihat Program Kerja <b>→</b></a></div>
+      </div>
+      <div class="hero-logo-wrap"><img src="assets/images/logo-parfi-asli.jpeg" alt="Logo asli PARFI"></div>
+      <div class="film-strip" aria-hidden="true"></div>
+    </section>
+
+    <section class="chair" id="profil">
+      <div class="chair-mark">“</div>
+      <div class="chair-copy"><p class="script">Sambutan Ketua</p><h2>Wira Lina, S.E., M.Si.</h2><span>Ketua PD PARFI Jawa Timur</span></div>
+      <blockquote>“Mari kita membangun PARFI Jawa Timur sebagai rumah besar para insan perfilman, tempat bersinergi, berkarya, dan memberikan kontribusi nyata bagi kemajuan industri film dan seni budaya Jawa Timur.”</blockquote>
+    </section>
+
+    <section class="values" id="program">
+      <article><b>▰</b><h3>Wadah &amp; Rumah Besar<br>Insan Perfilman</h3><p>Tempat berhimpun, bersinergi, dan berkarya bersama.</p></article>
+      <article><b>♟</b><h3>Memperjuangkan<br>Hak &amp; Kesejahteraan</h3><p>Menguatkan hak, kepentingan, dan kesejahteraan anggota.</p></article>
+      <article><b>◉</b><h3>Mengembangkan<br>Industri Film</h3><p>Mendukung kemajuan industri film di Jawa Timur.</p></article>
+      <article><b>♧</b><h3>Pelestarian Seni<br>dan Budaya</h3><p>Merawat budaya bangsa melalui karya film.</p></article>
+      <article><b>⌁</b><h3>Membangun Kemitraan<br>dan Kolaborasi</h3><p>Bersinergi dengan pemerintah, swasta, dan komunitas.</p></article>
+    </section>
+    <footer id="kontak"><span>PD PARFI JAWA TIMUR</span><p>Preview konsep visual. Logo ditampilkan dalam warna dan bentuk aslinya.</p></footer>
+  </main>
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.site-nav');
+    toggle.addEventListener('click', () => { const open = nav.classList.toggle('open'); toggle.setAttribute('aria-expanded', open); });
+  </script>
+</body>
+</html>
