@@ -1,5 +1,5 @@
 const geminiKey = process.env.GEMINI_API_KEY || process.env.DIANA_GEMINI_API_KEY;
-const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
 let cachedKnowledge = '';
 let cachedAt = 0;
 
