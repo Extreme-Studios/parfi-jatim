@@ -64,7 +64,7 @@ module.exports = async (req, res) => {
     { keys: ['alamat', 'sekretariat'], answer: 'Sekretariat PD PARFI Jawa Timur berada di Ruko Tidar Mas Square Blok A-11, Jalan Tidar 308–310, Surabaya, Jawa Timur.' },
     { keys: ['whatsapp', 'wa', 'nomor'], answer: 'WhatsApp PD PARFI Jawa Timur: +62 821-1997-0090 atas nama Wira Lina.' }
   ];
-  const direct = localAnswers.find((item) => item.keys.some((key) => new RegExp(`(^|\\s)${key.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}(?=\\s|$)`, 'i').test(normalized)));
+  const direct = localAnswers.find((item) => item.keys.some((key) => new RegExp(`(^|\\s)${key.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}(?:nya)?(?=\\s|$)`, 'i').test(normalized)));
   if (normalized.includes('berapa') && normalized.includes('pengurus')) {
     return res.status(200).json({ ok: true, answer: 'Struktur resmi PD PARFI Jawa Timur memuat 59 pengurus unik, terdiri dari penasehat, pimpinan daerah, sekretariat, bendahara, dan anggota biro.' });
   }
