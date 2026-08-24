@@ -65,6 +65,9 @@ module.exports = async (req, res) => {
     { keys: ['whatsapp', 'wa', 'nomor'], answer: 'WhatsApp PD PARFI Jawa Timur: +62 821-1997-0090 atas nama Wira Lina.' }
   ];
   const direct = localAnswers.find((item) => item.keys.some((key) => new RegExp(`(^|\\s)${key.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}(?=\\s|$)`, 'i').test(normalized)));
+  if (normalized.includes('berapa') && normalized.includes('pengurus')) {
+    return res.status(200).json({ ok: true, answer: 'Struktur resmi PD PARFI Jawa Timur memuat 59 pengurus unik, terdiri dari penasehat, pimpinan daerah, sekretariat, bendahara, dan anggota biro.' });
+  }
   if (direct && (normalized.includes('siapa') || normalized.includes('berapa') || normalized.includes('dimana') || normalized.includes('di mana') || normalized.includes('alamat') || normalized.includes('nomor'))) {
     return res.status(200).json({ ok: true, answer: direct.answer });
   }
