@@ -67,6 +67,12 @@ module.exports = async (req, res) => {
     { keys: ['whatsapp', 'wa', 'nomor'], answer: 'WhatsApp PD PARFI Jawa Timur: +62 821-1997-0090 atas nama Wira Lina.' }
   ];
   const direct = localAnswers.find((item) => item.keys.some((key) => new RegExp(`(^|\\s)${key.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}(?:nya)?(?=\\s|$)`, 'i').test(normalized)));
+  if (normalized.includes('keuangan') || normalized.includes('uang')) {
+    return res.status(200).json({ ok: true, answer: 'Urusan keuangan organisasi berada pada Bendahara, yaitu Felisha Lauren. Wakil Bendahara: Farida Evi Susiana.' });
+  }
+  if (normalized.includes('visi')) {
+    return res.status(200).json({ ok: true, answer: 'Visi PARFI adalah menjadi organisasi profesi yang profesional, bersatu, bermartabat, inovatif, serta menjadi garda terdepan dalam memajukan perfilman Indonesia yang berkualitas, berbudaya, dan berdaya saing nasional maupun internasional.' });
+  }
   if (normalized.includes('berapa') && normalized.includes('pengurus')) {
     return res.status(200).json({ ok: true, answer: 'Struktur resmi PD PARFI Jawa Timur memuat 59 pengurus unik, terdiri dari penasehat, pimpinan daerah, sekretariat, bendahara, dan anggota biro.' });
   }
