@@ -46,6 +46,16 @@ module.exports = async (req, res) => {
   if (!message) return res.status(400).json({ ok: false, error: 'Pesan kosong.' });
 
   const knowledge = relevantKnowledge(readSiteKnowledge(), message);
+  const normalized = message.toLowerCase();
+  const localAnswers = [
+    { keys: ['ketua', 'wira'], answer: 'Ketua PD PARFI Jawa Timur adalah Wira Lina, S.E., M.Si.' },
+    { keys: ['alamat', 'sekretariat'], answer: 'Sekretariat PD PARFI Jawa Timur berada di Ruko Tidar Mas Square Blok A-11, Jalan Tidar 308–310, Surabaya, Jawa Timur.' },
+    { keys: ['whatsapp', 'wa', 'nomor'], answer: 'WhatsApp PD PARFI Jawa Timur: +62 821-1997-0090 atas nama Wira Lina.' }
+  ];
+  const direct = localAnswers.find((item) => item.keys.some((key) => normalized.includes(key)));
+  if (direct && (normalized.includes('siapa') || normalized.includes('berapa') || normalized.includes('dimana') || normalized.includes('di mana') || normalized.includes('alamat') || normalized.includes('nomor'))) {
+    return res.status(200).json({ ok: true, answer: direct.answer });
+  }
   const prompt = [
     'Kamu Reva, asisten perempuan ramah website resmi PD PARFI Jawa Timur. Jawab singkat, profesional, hanya dari DATA WEBSITE. Jika tidak ada, katakan informasi belum tersedia.',
     `DATA WEBSITE: ${knowledge}`,
