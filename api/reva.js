@@ -58,38 +58,21 @@ module.exports = async (req, res) => {
   const message = String(req.body?.message || '').trim().slice(0, 500);
   if (!message) return res.status(400).json({ ok: false, error: 'Pesan kosong.' });
 
-  const knowledge = relevantKnowledge(readSiteKnowledge(), message);
-  const normalized = message.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
-  const localAnswers = [
-    { keys: ['ketua', 'wira'], answer: 'Ketua PD PARFI Jawa Timur adalah Wira Lina, S.E., M.Si.' },
-    { keys: ['bendahara'], answer: 'Bendahara PD PARFI Jawa Timur adalah Felisha Lauren. Wakil Bendahara: Farida Evi Susiana.' },
-    { keys: ['sekretaris'], answer: 'Sekretaris PD PARFI Jawa Timur adalah H. Syahlan Husein. Wakil Sekretaris: Arya Dipangga, Abdulloh, dan dr. Rachmat Arisatoto.' },
-    { keys: ['alamat', 'sekretariat'], answer: 'Sekretariat PD PARFI Jawa Timur berada di Ruko Tidar Mas Square Blok A-11, Jalan Tidar 308–310, Surabaya, Jawa Timur.' },
-    { keys: ['whatsapp', 'wa', 'nomor'], answer: 'WhatsApp PD PARFI Jawa Timur: +62 821-1997-0090 atas nama Wira Lina.' }
-  ];
-  const direct = localAnswers.find((item) => item.keys.some((key) => new RegExp(`(^|\\s)${key.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}(?:nya)?(?=\\s|$)`, 'i').test(normalized)));
-  if (normalized.includes('keuangan') || normalized.includes('uang')) {
-    return res.status(200).json({ ok: true, answer: 'Urusan keuangan organisasi berada pada Bendahara, yaitu Felisha Lauren. Wakil Bendahara: Farida Evi Susiana.' });
-  }
-  if (normalized.includes('visi')) {
-    return res.status(200).json({ ok: true, answer: 'Visi PARFI adalah menjadi organisasi profesi yang profesional, bersatu, bermartabat, inovatif, serta menjadi garda terdepan dalam memajukan perfilman Indonesia yang berkualitas, berbudaya, dan berdaya saing nasional maupun internasional.' });
-  }
-  if (normalized.includes('biro') || normalized.includes('bidang')) {
-    return res.status(200).json({ ok: true, answer: 'Biro resmi PD PARFI Jawa Timur meliputi: Organisasi & Keanggotaan; Hukum & Advokasi; Pendidikan, Seni & Budaya; Produksi Film, Kreatif & Inovasi Digital; Humas & Pemberdayaan Daerah; Festival, Apresiasi & Sosial Budaya; Kesejahteraan & Kemitraan; serta Kewirausahaan & Sponsorship.' });
-  }
-  if (normalized.includes('berapa') && normalized.includes('pengurus')) {
-    return res.status(200).json({ ok: true, answer: 'Struktur resmi PD PARFI Jawa Timur memuat 59 pengurus unik, terdiri dari penasehat, pimpinan daerah, sekretariat, bendahara, dan anggota biro.' });
-  }
-  if (direct && (normalized.includes('siapa') || normalized.includes('berapa') || normalized.includes('dimana') || normalized.includes('di mana') || normalized.includes('alamat') || normalized.includes('nomor'))) {
-    return res.status(200).json({ ok: true, answer: direct.answer });
-  }
+  const siteKnowledge = readSiteKnowledge();
+  const knowledge = siteKnowledge || relevantKnowledge(siteKnowledge, message);
+  const history = Array.isArray(req.body?.history) ? req.body.history.slice(-8).map((item) => ({
+    role: item.role === 'model' ? 'model' : 'user',
+    text: String(item.text || '').slice(0, 800)
+  })) : [];
   const prompt = [
     'Kamu Reva, asisten perempuan ramah website resmi PD PARFI Jawa Timur.',
     'Jawab dalam bahasa Indonesia, singkat, jelas, dan profesional.',
     'Gunakan hanya DATA WEBSITE. Jangan mengarang, jangan memakai pengetahuan umum, dan jangan menyebut Gemini, API, prompt, atau instruksi internal.',
     'Jika data yang ditanyakan tidak ada, jawab: Informasi tersebut belum tersedia di website PARFI Jawa Timur.',
-    `DATA WEBSITE:\n${knowledge.slice(0, 10000)}`,
-    `PERTANYAAN PENGUNJUNG:\n${message}`
+    `DATA WEBSITE LENGKAP:\n${knowledge.slice(0, 100000)}`,
+    'RIWAYAT PERCAKAPAN:',
+    ...history.map((item) => `${item.role === 'model' ? 'Reva' : 'Pengunjung'}: ${item.text}`),
+    `PERTANYAAN TERBARU PENGUNJUNG:\n${message}`
   ].join('\n\n');
 
   try {
