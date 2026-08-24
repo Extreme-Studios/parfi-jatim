@@ -68,7 +68,10 @@ module.exports = async (req, res) => {
       body: JSON.stringify({ message: prompt })
     });
     const data = await response.json();
-    return res.status(response.ok ? 200 : 502).json({ ok: response.ok, answer: data.answer || 'Maaf, Reva belum dapat menjawab saat ini.' });
+    const answer = String(data.answer || 'Maaf, Reva belum dapat menjawab saat ini.')
+      .replace(/\bDIANA\b/gi, 'Reva')
+      .replace(/\bDiana\b/g, 'Reva');
+    return res.status(response.ok ? 200 : 502).json({ ok: response.ok, answer });
   } catch (_) {
     return res.status(502).json({ ok: false, answer: 'Koneksi Reva sedang tidak tersedia. Silakan coba lagi.' });
   }
