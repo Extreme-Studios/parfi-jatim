@@ -9,3 +9,27 @@
 footer{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:112px;padding:24px 20px!important;background:linear-gradient(135deg,#03142e,#062a58)!important;color:#dce6f3;border-top:1px solid #d7a42e70;text-align:center}footer .footer-copyright{margin:0;color:#dce6f3;font:600 .72rem Manrope,Arial,sans-serif;letter-spacing:.08em}footer p{color:#dce6f3}
 .powered-by{grid-column:1/-1;margin:4px 0 0!important;padding-top:13px;border-top:1px solid #d7a42e55;text-align:center;font:500 .68rem Manrope,Arial,sans-serif!important;letter-spacing:.08em;color:#b8c9df!important;text-transform:uppercase}.powered-by a{color:#f0c85e;font-weight:800}.powered-by a:hover{color:#fff}
 .site-menu{background:linear-gradient(135deg,#03142e,#082e62)!important;color:#f6f0e5;border-bottom-color:#d7a42e;box-shadow:0 18px 32px #0008}.site-menu .menu-heading b,.site-menu summary{color:#fff}.site-menu .menu-heading p,.site-menu summary:after,.site-menu a:hover{color:#f0c85e}.site-menu details{border-color:#d7a42e55}.site-menu .menu-items a{color:#dce6f3}.site-menu .menu-items a:hover{color:#f0c85e}
+.site-menu details[open] summary:after{content:'−'}
+
+/* Editorial typography system: one consistent hierarchy across the public home page. */
+:root{--font-display:'DM Serif Display',Georgia,serif;--font-sans:'Plus Jakarta Sans',Arial,sans-serif;--font-mono:'IBM Plex Mono',ui-monospace,monospace}
+body{font-family:var(--font-sans)}
+h1,h2,h3,.hero h1,.greeting h2,.vm-profile h2,.vm-heading h2,.vm-vision h3,.vm-mission h3,.vm-values h4,.heritage h2,.legal h2,.contact-strip h2,.featured-story h2,.story-grid h3,.agenda-list h3,.join h2,.vision-card h2{font-family:var(--font-display)!important;font-weight:400;line-height:1.1;letter-spacing:-.025em}
+p,li,a,button,input,textarea,select,.brand,.desktop-nav,.header-join,.button,.text-link,.contact-detail,.vm-subtitle,.vm-about,.vm-vision p,.vm-mission-list li,.vm-values span,.greeting-full,.lead,.hero-subline{font-family:var(--font-sans)!important}
+.eyebrow,.category,.section-kicker,.history-note,.mission li span,.vm-period,.vm-values>p,.contact-detail small,.ticker{font-family:var(--font-mono)!important}
+.hero h1{font-size:clamp(3rem,7vw,6.5rem)!important;line-height:1.05!important}
+.hero .lead{font-size:clamp(1rem,1.25vw,1.125rem);line-height:1.65}
+.greeting h2{font-size:clamp(2.6rem,5vw,5rem)!important;line-height:1.08!important}
+.greeting-full{font-size:1rem;line-height:1.7}
+.greeting-intro{font-family:var(--font-sans)!important;font-size:1rem;line-height:1.65}
+.vm-heading h2{font-size:clamp(2rem,4vw,4rem)!important;line-height:1.1!important}
+.vm-profile h2{font-size:clamp(2.4rem,4.2vw,4.7rem)!important;line-height:1.05!important}
+.vm-vision h3,.vm-mission h3{font-size:clamp(1.9rem,3vw,3rem)!important;line-height:1.1!important}
+.vm-vision p,.vm-mission-list li{font-size:1rem;line-height:1.65}
+.vm-mission-list li:before,.vm-values b{font-family:var(--font-display)!important;font-weight:400}
+.vm-values h4{font-size:1rem;line-height:1.15}
+.vm-values span{font-size:.82rem;line-height:1.5}
+.mission-list li,.legal-list li,.agenda-list p,.story-grid article>p:not(.category),.featured-story div>p:not(.category),.about-main p,.heritage-copy p,.legal-top p,.legal-note{font-family:var(--font-sans)!important;line-height:1.7}
+.vm-profile img{position:relative;top:auto;right:auto;display:block;width:min(100%,285px);margin:26px auto 0;box-shadow:0 13px 26px #000a}
+.vm-period{margin:22px auto 0}
+@media(max-width:650px){.hero h1{font-size:clamp(2.8rem,13vw,4.6rem)!important}.vm-profile img{width:min(100%,300px)}.greeting-full{font-size:.96rem}}
