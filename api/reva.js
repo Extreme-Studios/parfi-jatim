@@ -59,6 +59,8 @@ module.exports = async (req, res) => {
   const normalized = message.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
   const localAnswers = [
     { keys: ['ketua', 'wira'], answer: 'Ketua PD PARFI Jawa Timur adalah Wira Lina, S.E., M.Si.' },
+    { keys: ['bendahara'], answer: 'Bendahara PD PARFI Jawa Timur adalah Felisha Lauren. Wakil Bendahara: Farida Evi Susiana.' },
+    { keys: ['sekretaris'], answer: 'Sekretaris PD PARFI Jawa Timur adalah H. Syahlan Husein. Wakil Sekretaris: Arya Dipangga, Abdulloh, dan dr. Rachmat Arisatoto.' },
     { keys: ['alamat', 'sekretariat'], answer: 'Sekretariat PD PARFI Jawa Timur berada di Ruko Tidar Mas Square Blok A-11, Jalan Tidar 308–310, Surabaya, Jawa Timur.' },
     { keys: ['whatsapp', 'wa', 'nomor'], answer: 'WhatsApp PD PARFI Jawa Timur: +62 821-1997-0090 atas nama Wira Lina.' }
   ];
