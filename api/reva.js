@@ -29,12 +29,14 @@ function readSiteKnowledge() {
 }
 
 function relevantKnowledge(knowledge, message) {
-  const terms = message.toLowerCase().split(/[^a-z0-9à-ÿ]+/i).filter((term) => term.length > 2);
+  const stopwords = new Set(['yang', 'dan', 'ada', 'ini', 'itu', 'dari', 'untuk', 'tentang', 'siapa', 'apa', 'berapa', 'namanya', 'nya', 'di', 'ke', 'pada', 'saya', 'mau', 'ingin']);
+  const terms = message.toLowerCase().split(/[^a-z0-9à-ÿ]+/i).filter((term) => term.length > 2 && !stopwords.has(term));
+  if (!terms.length || !terms.some((term) => knowledge.toLowerCase().includes(term))) return '';
   const anchored = terms.map((term) => {
     const index = knowledge.toLowerCase().lastIndexOf(term);
     return index >= 0 ? knowledge.slice(Math.max(0, index - 75), index + 125) : '';
   }).filter(Boolean).join(' ');
-  if (anchored) return anchored.slice(0, 180);
+  if (anchored) return anchored.slice(0, 600);
   const sentences = knowledge.split(/(?<=[.!?])\s+/);
   const ranked = sentences.map((sentence, index) => ({
     sentence,
@@ -47,7 +49,7 @@ function relevantKnowledge(knowledge, message) {
     const start = Math.max(0, (match || 0) - 70);
     return item.sentence.slice(start, start + 180);
   }).join(' ');
-  return selected.slice(0, 180);
+  return selected.slice(0, 600);
 }
 
 module.exports = async (req, res) => {
@@ -73,7 +75,7 @@ module.exports = async (req, res) => {
   }
   const prompt = [
     'Kamu Reva, asisten perempuan ramah website resmi PD PARFI Jawa Timur. Jawab singkat, profesional, hanya dari DATA WEBSITE. Jika tidak ada, katakan informasi belum tersedia.',
-    `DATA WEBSITE: ${knowledge}`,
+    `DATA WEBSITE: ${knowledge.slice(0, 180)}`,
     `PERTANYAAN: ${message.slice(0, 90)}`
   ].join('\n\n');
 
@@ -83,7 +85,12 @@ module.exports = async (req, res) => {
       body: JSON.stringify({ message: prompt })
     });
     const data = await response.json();
-    const answer = String(data.answer || 'Maaf, Reva belum dapat menjawab saat ini.')
+    let answer = String(data.answer || '');
+    const unavailable = /belum tersedia|tidak tersedia|diteruskan ke admin|tidak ditemukan/i.test(answer);
+    if ((!response.ok || unavailable) && knowledge) {
+      answer = `Informasi yang tersedia di website PARFI Jawa Timur: ${knowledge}`;
+    }
+    answer = (answer || 'Maaf, informasi itu belum tersedia di website PARFI Jawa Timur.')
       .replace(/\bDIANA\b/gi, 'Reva')
       .replace(/\bDiana\b/g, 'Reva')
       .replace(/Extreme Studios/gi, 'PARFI Jawa Timur');
