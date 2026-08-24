@@ -82,6 +82,7 @@ module.exports = async (req, res) => {
       body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: { temperature: 0.2, maxOutputTokens: 300 } })
     });
     const data = await response.json();
+    if (!response.ok) console.error('Reva Gemini request failed', response.status, data?.error?.message || 'Unknown error');
     let answer = String(data.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join('') || '');
     const unavailable = /belum tersedia|tidak tersedia|diteruskan ke admin|tidak ditemukan/i.test(answer);
     if ((!response.ok || unavailable) && knowledge) {
