@@ -1,24 +1,23 @@
-const fs = require('fs');
-const path = require('path');
-
 const geminiKey = process.env.GEMINI_API_KEY || process.env.DIANA_GEMINI_API_KEY;
 const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+let cachedKnowledge = '';
+let cachedAt = 0;
 
-function readSiteKnowledge() {
-  // Semua halaman publik PARFI menjadi sumber pengetahuan; halaman admin dan halaman lama Extreme Studios sengaja dikecualikan.
-  const files = [
+async function readSiteKnowledge(req) {
+  if (cachedKnowledge && Date.now() - cachedAt < 5 * 60 * 1000) return cachedKnowledge;
+  const pages = [
     'index.html',
     'preview-struktur.html',
-    'preview-pengurus.html',
-    'preview-pengurus-detail.html',
     'ad-art-parfi.html',
-    'struktur-pd-parfi-jatim.html',
-    'preview-beranda-emas.html',
-    'preview-premium.html'
+    'preview-pengurus.html'
   ];
-  return files.map((file) => {
+  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  const origin = `https://${host}`;
+  const content = await Promise.all(pages.map(async (page) => {
     try {
-      const raw = fs.readFileSync(path.join(process.cwd(), file), 'utf8');
+      const response = await fetch(`${origin}/${page}`);
+      if (!response.ok) return '';
+      const raw = await response.text();
       return raw
         .replace(/<script[\s\S]*?<\/script>/gi, ' ')
         .replace(/<style[\s\S]*?<\/style>/gi, ' ')
@@ -26,7 +25,10 @@ function readSiteKnowledge() {
         .replace(/&amp;/g, '&').replace(/&copy;/g, '©').replace(/&nbsp;/g, ' ')
         .replace(/\s+/g, ' ').trim();
     } catch (_) { return ''; }
-  }).filter(Boolean).join('\n\n').slice(0, 100000);
+  }));
+  cachedKnowledge = content.filter(Boolean).join('\n\n').slice(0, 28000);
+  cachedAt = Date.now();
+  return cachedKnowledge;
 }
 
 function relevantKnowledge(knowledge, message) {
@@ -58,7 +60,7 @@ module.exports = async (req, res) => {
   const message = String(req.body?.message || '').trim().slice(0, 500);
   if (!message) return res.status(400).json({ ok: false, error: 'Pesan kosong.' });
 
-  const siteKnowledge = readSiteKnowledge();
+  const siteKnowledge = await readSiteKnowledge(req);
   const knowledge = siteKnowledge || relevantKnowledge(siteKnowledge, message);
   const history = Array.isArray(req.body?.history) ? req.body.history.slice(-8).map((item) => ({
     role: item.role === 'model' ? 'model' : 'user',
