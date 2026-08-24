@@ -74,6 +74,9 @@ module.exports = async (req, res) => {
   if (normalized.includes('visi')) {
     return res.status(200).json({ ok: true, answer: 'Visi PARFI adalah menjadi organisasi profesi yang profesional, bersatu, bermartabat, inovatif, serta menjadi garda terdepan dalam memajukan perfilman Indonesia yang berkualitas, berbudaya, dan berdaya saing nasional maupun internasional.' });
   }
+  if (normalized.includes('biro') || normalized.includes('bidang')) {
+    return res.status(200).json({ ok: true, answer: 'Biro resmi PD PARFI Jawa Timur meliputi: Organisasi & Keanggotaan; Hukum & Advokasi; Pendidikan, Seni & Budaya; Produksi Film, Kreatif & Inovasi Digital; Humas & Pemberdayaan Daerah; Festival, Apresiasi & Sosial Budaya; Kesejahteraan & Kemitraan; serta Kewirausahaan & Sponsorship.' });
+  }
   if (normalized.includes('berapa') && normalized.includes('pengurus')) {
     return res.status(200).json({ ok: true, answer: 'Struktur resmi PD PARFI Jawa Timur memuat 59 pengurus unik, terdiri dari penasehat, pimpinan daerah, sekretariat, bendahara, dan anggota biro.' });
   }
