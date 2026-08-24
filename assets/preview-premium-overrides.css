@@ -1,0 +1,5 @@
+.hero-tagline{max-width:520px;color:#d0af71;font:600 .72rem/1.7 var(--mono);letter-spacing:.08em}
+.manifesto-grid{grid-template-columns:repeat(5,1fr)}
+.structure-callout{display:flex;align-items:end;justify-content:space-between;gap:35px;padding:clamp(70px,9vw,120px) clamp(24px,7vw,115px);background:#0e1a2e;border-bottom:1px solid #b8945238}
+.structure-callout h2{margin:17px 0;font:400 clamp(2.6rem,5vw,5rem)/1.05 var(--display);letter-spacing:-.025em}.structure-callout h2 em{color:#d0af71;font-style:normal}.structure-callout p:not(.eyebrow){max-width:580px;color:#b9c3d0;line-height:1.7}
+@media(max-width:780px){.manifesto-grid{grid-template-columns:1fr}.structure-callout{display:block}.structure-callout .button{display:inline-block;margin-top:22px}}
