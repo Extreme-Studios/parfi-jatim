@@ -26,7 +26,13 @@ function relevantKnowledge(knowledge, message) {
     index,
     score: terms.reduce((total, term) => total + (sentence.toLowerCase().includes(term) ? 1 : 0), 0)
   })).sort((a, b) => b.score - a.score || a.index - b.index);
-  return ranked.slice(0, 3).map((item) => item.sentence).join(' ').slice(0, 180);
+  const selected = ranked.slice(0, 3).map((item) => {
+    if (item.sentence.length <= 180) return item.sentence;
+    const match = terms.map((term) => item.sentence.toLowerCase().indexOf(term)).find((index) => index >= 0);
+    const start = Math.max(0, (match || 0) - 70);
+    return item.sentence.slice(start, start + 180);
+  }).join(' ');
+  return selected.slice(0, 180);
 }
 
 module.exports = async (req, res) => {
@@ -38,7 +44,7 @@ module.exports = async (req, res) => {
   const prompt = [
     'Kamu Reva, asisten perempuan ramah website resmi PD PARFI Jawa Timur. Jawab singkat, profesional, hanya dari DATA WEBSITE. Jika tidak ada, katakan informasi belum tersedia.',
     `DATA WEBSITE: ${knowledge}`,
-    `PERTANYAAN: ${message.slice(0, 120)}`
+    `PERTANYAAN: ${message.slice(0, 90)}`
   ].join('\n\n');
 
   try {
