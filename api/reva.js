@@ -4,7 +4,17 @@ const path = require('path');
 const endpoint = process.env.EXTREME_DIANA_ENDPOINT || 'https://extremestudiosai.com/api/diana';
 
 function readSiteKnowledge() {
-  const files = ['index.html', 'preview-struktur.html', 'ad-art-parfi.html'];
+  // Semua halaman publik PARFI menjadi sumber pengetahuan; halaman admin dan halaman lama Extreme Studios sengaja dikecualikan.
+  const files = [
+    'index.html',
+    'preview-struktur.html',
+    'preview-pengurus.html',
+    'preview-pengurus-detail.html',
+    'ad-art-parfi.html',
+    'struktur-pd-parfi-jatim.html',
+    'preview-beranda-emas.html',
+    'preview-premium.html'
+  ];
   return files.map((file) => {
     try {
       const raw = fs.readFileSync(path.join(process.cwd(), file), 'utf8');
@@ -15,7 +25,7 @@ function readSiteKnowledge() {
         .replace(/&amp;/g, '&').replace(/&copy;/g, '©').replace(/&nbsp;/g, ' ')
         .replace(/\s+/g, ' ').trim();
     } catch (_) { return ''; }
-  }).filter(Boolean).join('\n\n').slice(0, 30000);
+  }).filter(Boolean).join('\n\n').slice(0, 100000);
 }
 
 function relevantKnowledge(knowledge, message) {
