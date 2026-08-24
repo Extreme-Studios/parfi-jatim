@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const geminiKey = process.env.GEMINI_API_KEY || process.env.DIANA_GEMINI_API_KEY;
-const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
 function readSiteKnowledge() {
   // Semua halaman publik PARFI menjadi sumber pengetahuan; halaman admin dan halaman lama Extreme Studios sengaja dikecualikan.
