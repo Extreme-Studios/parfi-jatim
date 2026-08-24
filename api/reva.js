@@ -20,6 +20,11 @@ function readSiteKnowledge() {
 
 function relevantKnowledge(knowledge, message) {
   const terms = message.toLowerCase().split(/[^a-z0-9à-ÿ]+/i).filter((term) => term.length > 2);
+  const anchored = terms.map((term) => {
+    const index = knowledge.toLowerCase().lastIndexOf(term);
+    return index >= 0 ? knowledge.slice(Math.max(0, index - 75), index + 125) : '';
+  }).filter(Boolean).join(' ');
+  if (anchored) return anchored.slice(0, 180);
   const sentences = knowledge.split(/(?<=[.!?])\s+/);
   const ranked = sentences.map((sentence, index) => ({
     sentence,
