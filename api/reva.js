@@ -10,9 +10,10 @@ function plainText(value) {
 
 function extractNews(html) {
   const items = [];
-  const pattern = /<article[^>]*>[\s\S]*?<h[23][^>]*>([\s\S]*?)<\/h[23]>[\s\S]*?<a\s+href="(https?:\/\/[^"\s]+)"/gi;
+  const section = html.match(/<section[^>]+id="berita"[\s\S]*?<\/section>/i)?.[0] || html;
+  const pattern = /<article[^>]*>[\s\S]*?<h[23][^>]*>([\s\S]*?)<\/h[23]>[\s\S]*?<a\s+href="(https?:\/\/[^"\s]+)"[\s\S]*?<\/article>/gi;
   let match;
-  while ((match = pattern.exec(html)) && items.length < 5) {
+  while ((match = pattern.exec(section)) && items.length < 5) {
     const title = plainText(match[1]);
     if (title) items.push({ title, url: match[2] });
   }
