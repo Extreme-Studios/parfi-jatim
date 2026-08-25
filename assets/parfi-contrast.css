@@ -6,3 +6,6 @@
 .legal-note{background:#e8dfcf!important;color:#273447!important}
 .principles,.legal-list,.agenda-list,.principles div,.agenda-list>div,.legal-list li{border-color:#b8945266!important}
 .section-kicker,.category,.agenda-list span,.legal-list li:before{color:#8c6b35!important}
+/* home-gold.css hides the menu with !important; restore the mobile drawer state. */
+.site-menu.open{display:block!important;z-index:50!important}
+@media(max-width:780px){.site-menu.open{top:76px!important;display:block!important;max-height:calc(100vh - 76px);overflow:auto}}
