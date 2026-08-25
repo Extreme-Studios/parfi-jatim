@@ -1,0 +1,8 @@
+/* Final readability layer: dark ink on light editorial sections. */
+.about,.heritage,.legal,.agenda{background:#f3f0e8!important;color:#0b1220!important}
+.about-main p,.heritage-copy p,.legal-top p,.legal-list li,.agenda-list p{color:#334155!important}
+.about h2,.heritage h2,.legal h2,.agenda h2{color:#0b1220!important}
+.about h2 em,.heritage h2 em,.legal h2 em{color:#8c6b35!important}
+.legal-note{background:#e8dfcf!important;color:#273447!important}
+.principles,.legal-list,.agenda-list,.principles div,.agenda-list>div,.legal-list li{border-color:#b8945266!important}
+.section-kicker,.category,.agenda-list span,.legal-list li:before{color:#8c6b35!important}
