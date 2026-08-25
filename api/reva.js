@@ -2,6 +2,22 @@ const geminiKey = process.env.GEMINI_API_KEY || process.env.DIANA_GEMINI_API_KEY
 const geminiModel = process.env.GEMINI_MODEL || 'gemini-flash-lite-latest';
 let cachedKnowledge = '';
 let cachedAt = 0;
+let cachedNews = [];
+
+function plainText(value) {
+  return String(value).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+}
+
+function extractNews(html) {
+  const items = [];
+  const pattern = /<article[^>]*>[\s\S]*?<h[23][^>]*>([\s\S]*?)<\/h[23]>[\s\S]*?<a\s+href="(https?:\/\/[^"\s]+)"/gi;
+  let match;
+  while ((match = pattern.exec(html)) && items.length < 5) {
+    const title = plainText(match[1]);
+    if (title) items.push({ title, url: match[2] });
+  }
+  return items;
+}
 
 async function readSiteKnowledge(req) {
   if (cachedKnowledge && Date.now() - cachedAt < 5 * 60 * 1000) return cachedKnowledge;
@@ -18,6 +34,7 @@ async function readSiteKnowledge(req) {
       const response = await fetch(`${origin}/${page}`);
       if (!response.ok) return '';
       const raw = await response.text();
+      if (page === 'index.html') cachedNews = extractNews(raw);
       return raw
         .replace(/<script[\s\S]*?<\/script>/gi, ' ')
         .replace(/<style[\s\S]*?<\/style>/gi, ' ')
@@ -62,6 +79,10 @@ module.exports = async (req, res) => {
 
   const siteKnowledge = await readSiteKnowledge(req);
   const knowledge = siteKnowledge || relevantKnowledge(siteKnowledge, message);
+  if (/\bberita\b|\bheadline\b|\bkabar\b/i.test(message) && cachedNews.length) {
+    const list = cachedNews.map((item, index) => `${index + 1}. ${item.title}\n${item.url}`).join('\n\n');
+    return res.status(200).json({ ok: true, answer: `Berita yang tersedia di website PARFI Jawa Timur:\n\n${list}` });
+  }
   const history = Array.isArray(req.body?.history) ? req.body.history.slice(-8).map((item) => ({
     role: item.role === 'model' ? 'model' : 'user',
     text: String(item.text || '').slice(0, 800)
