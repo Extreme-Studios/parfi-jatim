@@ -1,11 +1,12 @@
-/* Final readability layer: dark ink on light editorial sections. */
-.about,.heritage,.legal,.agenda{background:#f3f0e8!important;color:#0b1220!important}
-.about-main p,.heritage-copy p,.legal-top p,.legal-list li,.agenda-list p{color:#334155!important}
-.about h2,.heritage h2,.legal h2,.agenda h2{color:#0b1220!important}
-.about h2 em,.heritage h2 em,.legal h2 em{color:#8c6b35!important}
-.legal-note{background:#e8dfcf!important;color:#273447!important}
+/* Final readability layer: every public content section uses the same navy
+   family as the home page, with explicit high-contrast text colors. */
+.vision-mission,.about,.heritage,.legal,.agenda{background:linear-gradient(135deg,#041a3b 0%,#072b5d 54%,#041a3b 100%)!important;color:#f6f0e5!important;background-image:none!important}
+.vm-profile h2,.vm-heading h2,.about h2,.heritage h2,.legal h2,.agenda h2{color:#fff!important}
+.vm-profile h2 em,.vm-heading h2 em,.about h2 em,.heritage h2 em,.legal h2 em{color:#f0c85e!important}
+.vm-about,.about-main p,.heritage-copy p,.legal-top p,.legal-list li,.agenda-list p{color:#dce6f3!important}
+.legal-note{background:#0a3469!important;color:#f1eadc!important}
 .principles,.legal-list,.agenda-list,.principles div,.agenda-list>div,.legal-list li{border-color:#b8945266!important}
-.section-kicker,.category,.agenda-list span,.legal-list li:before{color:#8c6b35!important}
+.section-kicker,.category,.agenda-list span,.legal-list li:before{color:#f0c85e!important}
 /* home-gold.css hides the menu with !important; restore the mobile drawer state. */
 .site-menu.open{display:block!important;z-index:50!important}
 @media(max-width:780px){.site-menu.open{top:76px!important;display:block!important;max-height:calc(100vh - 76px);overflow:auto}}
