@@ -80,14 +80,29 @@ module.exports = async (req, res) => {
 
   const siteKnowledge = await readSiteKnowledge(req);
   const knowledge = siteKnowledge || relevantKnowledge(siteKnowledge, message);
-  if (/\bberita\b|\bheadline\b|\bkabar\b/i.test(message) && cachedNews.length) {
-    const list = cachedNews.map((item, index) => `${index + 1}. ${item.title}\n${item.url}`).join('\n\n');
-    return res.status(200).json({ ok: true, answer: `Berita yang tersedia di website PARFI Jawa Timur:\n\n${list}` });
-  }
   const history = Array.isArray(req.body?.history) ? req.body.history.slice(-8).map((item) => ({
     role: item.role === 'model' ? 'model' : 'user',
     text: String(item.text || '').slice(0, 800)
   })) : [];
+  const conversationText = [message, ...history.map((item) => item.text)].join(' ').toLowerCase();
+
+  // Resolve follow-up requests for a page/link deterministically. This keeps
+  // navigation answers precise instead of asking the model to invent URLs.
+  if (/\b(link|tautan|url|menuju|buka)\b/i.test(conversationText)) {
+    if (/\bgeorge\b|handiwanto|wicaksono/i.test(conversationText)) {
+      return res.status(200).json({ ok: true, answer: 'Bagian Dr. George Handiwanto, S.H., M.H. ada di halaman Struktur Pengurus, bagian Dewan Penasehat:\nhttps://parfijatim.vercel.app/preview-struktur.html#penasihat' });
+    }
+    if (/struktur|pengurus|penasehat|biro/i.test(conversationText)) {
+      return res.status(200).json({ ok: true, answer: 'Halaman Struktur Pengurus PARFI Jawa Timur dapat dibuka di sini:\nhttps://parfijatim.vercel.app/preview-struktur.html' });
+    }
+    if (/ad\s*\/?\s*art|anggaran dasar|anggaran rumah tangga/i.test(conversationText)) {
+      return res.status(200).json({ ok: true, answer: 'Dokumen AD/ART PARFI dapat dibuka di sini:\nhttps://parfijatim.vercel.app/ad-art-parfi.html' });
+    }
+  }
+  if (/\bberita\b|\bheadline\b|\bkabar\b/i.test(message) && cachedNews.length) {
+    const list = cachedNews.map((item, index) => `${index + 1}. ${item.title}\n${item.url}`).join('\n\n');
+    return res.status(200).json({ ok: true, answer: `Berita yang tersedia di website PARFI Jawa Timur:\n\n${list}` });
+  }
   const prompt = [
     'Kamu Reva, asisten perempuan ramah website resmi PD PARFI Jawa Timur.',
     'Jawab dalam bahasa Indonesia, singkat, jelas, dan profesional.',
@@ -108,11 +123,7 @@ module.exports = async (req, res) => {
     const data = await response.json();
     if (!response.ok) console.error('Reva Gemini request failed', response.status, data?.error?.message || 'Unknown error');
     let answer = String(data.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join('') || '');
-    const unavailable = /belum tersedia|tidak tersedia|diteruskan ke admin|tidak ditemukan/i.test(answer);
-    if ((!response.ok || unavailable) && knowledge) {
-      answer = `Informasi yang tersedia di website PARFI Jawa Timur: ${knowledge}`;
-    }
-    answer = (answer || 'Maaf, informasi itu belum tersedia di website PARFI Jawa Timur.')
+    answer = (answer || 'Informasi tersebut belum tersedia di website PARFI Jawa Timur. Coba sebutkan nama, bagian, atau halaman yang dimaksud.')
       .replace(/\bDIANA\b/gi, 'Reva')
       .replace(/\bDiana\b/g, 'Reva')
       .replace(/Extreme Studios/gi, 'PARFI Jawa Timur');
