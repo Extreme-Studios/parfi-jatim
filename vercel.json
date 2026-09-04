@@ -7,6 +7,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/johnadi1984", "destination": "/johnadi1984.html" },
     { "source": "/admin", "destination": "/admin.html" },
     {
       "source": "/",

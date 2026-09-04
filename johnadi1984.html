@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Content Center · PARFI Jawa Timur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/private-admin.css">
+</head>
+<body>
+  <main id="loginView" class="login-page">
+    <section class="login-card">
+      <a class="brand" href="/">PARFI <span>JAWA TIMUR</span></a>
+      <p class="eyebrow">PRIVATE MANAGEMENT AREA</p>
+      <h1>AI Content<br><em>Center.</em></h1>
+      <p class="intro">Kelola konten organisasi secara aman dari ruang kerja pribadi Anda.</p>
+      <form id="loginForm" novalidate>
+        <label>Email<input name="email" type="email" autocomplete="email" required placeholder="nama@domain.com"></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required placeholder="Masukkan password"></label>
+        <button class="button primary" type="submit" id="loginButton">Login <span>→</span></button>
+        <p id="loginMessage" class="message" role="alert" aria-live="polite"></p>
+      </form>
+    </section>
+    <aside class="login-aside"><div class="orb"></div><p>PARFI JATIM</p><strong>Merawat cerita.<br>Menguatkan profesi.</strong></aside>
+  </main>
+
+  <main id="dashboardView" class="dashboard hidden">
+    <aside class="sidebar">
+      <a class="brand" href="/">PARFI <span>JAWA TIMUR</span></a>
+      <p class="eyebrow">AI CONTENT CENTER</p>
+      <nav aria-label="Menu private">
+        <button class="nav-item active" data-section="home">Ringkasan</button>
+        <button class="nav-item" data-section="news">Tambah Berita</button>
+        <button class="nav-item" data-section="film">Tambah Film</button>
+        <button class="nav-item" data-section="agenda">Tambah Agenda</button>
+      </nav>
+      <div class="account"><span id="userEmail">Pengelola</span><button id="logoutButton" class="logout">Logout</button></div>
+    </aside>
+    <section class="content"><header><div><p class="eyebrow" id="sectionEyebrow">PRIVATE DASHBOARD</p><h2 id="sectionTitle">Selamat datang.</h2></div><a href="/" class="site-link">Lihat website ↗</a></header>
+      <section class="hero"><p class="eyebrow">RUANG KERJA PRIBADI</p><h3>Bangun cerita yang layak<br><em>untuk ditonton.</em></h3><p>Pilih salah satu menu untuk mulai menyiapkan konten PARFI Jawa Timur.</p></section>
+      <section id="placeholder" class="placeholder-grid"></section>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/private-admin.js"></script>
+</body>
+</html>
