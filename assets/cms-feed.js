@@ -11,7 +11,7 @@
     if (!data.ok) throw new Error(data.error || 'Konten belum tersedia.');
     return (data.items || []).filter(item => item.status === 'PUBLISH');
   };
-  const newsCard = item => `<article>${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="${escapeHtml(item.judul)}" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;margin-bottom:16px">` : ''}<p class="category">${formatDate(item.tanggal)}</p><h3>${escapeHtml(item.judul)}</h3><p>${escapeHtml(item.ringkasan || item.isi)}</p></article>`;
+  const newsCard = item => { const open=item.sumber_url ? `<a href="${escapeHtml(item.sumber_url)}" target="_blank" rel="noopener noreferrer">` : ''; const close=open?'</a>':''; return `<article>${open}${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="${escapeHtml(item.judul)}" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;margin-bottom:16px">` : ''}<p class="category">${formatDate(item.tanggal)}</p><h3>${escapeHtml(item.judul)}</h3><p>${escapeHtml(item.ringkasan || item.isi)}</p>${close}</article>` };
   const eventCard = (item, index) => `<div>${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="${escapeHtml(item.nama_event)}" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;margin-bottom:16px">` : ''}<span>${String(index + 1).padStart(2, '0')}</span><h3>${escapeHtml(item.nama_event)}</h3><p>${formatDate(item.tanggal_mulai)}${item.lokasi ? ` · ${escapeHtml(item.lokasi)}` : ''}${item.ringkasan ? `<br>${escapeHtml(item.ringkasan)}` : ''}</p></div>`;
   Promise.all([getPublished('news'), getPublished('event')]).then(([news, events]) => {
     const newsFeed = document.querySelector('#newsFeed');

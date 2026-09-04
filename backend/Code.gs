@@ -22,6 +22,7 @@ function dispatch_(payload) {
     if (action === 'public') return { ok: true, items: list_(payload.type, true) };
     if (action === 'login') return login_(payload);
     if (action === 'logout') return logout_(payload.token);
+    if (action === 'automation_save') return automationSave_(payload);
 
     const session = requireSession_(payload.token);
     if (action === 'list') return { ok: true, items: list_(payload.type, false) };
@@ -34,6 +35,12 @@ function dispatch_(payload) {
     console.error(error && error.stack ? error.stack : error);
     return { ok: false, error: error && error.message ? error.message : 'Terjadi gangguan pada server.' };
   }
+}
+
+function automationSave_(payload) {
+  const expected = PropertiesService.getScriptProperties().getProperty('PARFI_AUTOMATION_SECRET');
+  if (!expected || !payload.secret || String(payload.secret) !== expected) throw new Error('Automation tidak diizinkan.');
+  return save_(payload, { nama: 'AI Content Center', role: 'MASTER' });
 }
 
 function login_(payload) {
@@ -127,19 +134,21 @@ function save_(payload, session) {
   const description = clean_(data.description, 12000);
   if (!title || !description) throw new Error('Judul dan deskripsi wajib diisi.');
 
-  const sheet = SpreadsheetApp.openById(CMS.spreadsheetId).getSheetByName(config.sheet);
-  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-  const existing = findRow_(sheet, headers, data.id);
   const now = Utilities.formatDate(new Date(), 'Asia/Jakarta', "yyyy-MM-dd'T'HH:mm:ss");
   let image = { url: data.image_url || '', id: data.image_drive_id || '' };
   if (data.image_base64) image = saveImage_(data.image_base64, data.image_name || 'gambar-parfi.jpg');
+  const sheet = sheet_(config);
+  let headers = sheet.getLastColumn() ? sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0] : [];
+  const existing = headers.length ? findRow_(sheet, headers, data.id) : null;
 
   const record = config.makeRecord({
     id: existing ? data.id : Utilities.getUuid(), title: title, description: description,
     summary: clean_(data.summary, 300), image: image, status: data.status === 'DRAFT' ? 'DRAFT' : 'PUBLISH',
     date: clean_(data.date, 30), endDate: clean_(data.end_date, 30), location: clean_(data.location, 250),
+    sourceUrl: clean_(data.source_url, 2000), videoUrl: clean_(data.video_url, 2000),
     author: session.nama, createdAt: existing ? existing.record.dibuat_pada : now, updatedAt: now,
   });
+  headers = ensureHeaders_(sheet, Object.keys(record));
   const values = headers.map(header => record[header] === undefined ? '' : record[header]);
   if (existing) sheet.getRange(existing.rowNumber, 1, 1, values.length).setValues([values]);
   else sheet.appendRow(values);
@@ -165,12 +174,38 @@ function typeConfig_(type) {
       dibuat_pada: d.createdAt, diubah_pada: d.updatedAt, penulis: d.author,
     }) };
   }
+  if (String(type).toLowerCase() === 'film') {
+    return { sheet: 'Film', makeRecord: d => ({
+      id: d.id, judul: d.title, ringkasan: d.summary, sinopsis: d.description,
+      gambar_url: d.image.url, gambar_drive_id: d.image.id, video_url: d.videoUrl,
+      status: d.status, slug: slug_(d.title), dibuat_pada: d.createdAt,
+      diubah_pada: d.updatedAt, penulis: d.author,
+    }) };
+  }
   return { sheet: 'Berita', makeRecord: d => ({
     id: d.id, judul: d.title, ringkasan: d.summary, isi: d.description,
     gambar_url: d.image.url, gambar_drive_id: d.image.id, tanggal: d.date,
     status: d.status, slug: slug_(d.title), dibuat_pada: d.createdAt,
-    diubah_pada: d.updatedAt, penulis: d.author, jenis: 'BERITA',
+    diubah_pada: d.updatedAt, penulis: d.author, jenis: 'BERITA', sumber_url: d.sourceUrl,
   }) };
+}
+
+function sheet_(config) {
+  const book = SpreadsheetApp.openById(CMS.spreadsheetId);
+  let sheet = book.getSheetByName(config.sheet);
+  if (!sheet) sheet = book.insertSheet(config.sheet);
+  return sheet;
+}
+
+function ensureHeaders_(sheet, names) {
+  const lastColumn = sheet.getLastColumn();
+  let headers = lastColumn ? sheet.getRange(1, 1, 1, lastColumn).getValues()[0].map(String) : [];
+  const missing = names.filter(name => name && headers.indexOf(name) < 0);
+  if (missing.length) {
+    sheet.getRange(1, headers.length + 1, 1, missing.length).setValues([missing]);
+    headers = headers.concat(missing);
+  }
+  return headers;
 }
 
 function saveImage_(dataUrl, fileName) {
