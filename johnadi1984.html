@@ -6,22 +6,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/private-admin.css">
+  <style>
+    .login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f3eadb;padding:24px}
+    .login-card{width:min(100%,380px);padding:42px;background:#fffaf0;border:1px solid #e5d8c5;border-radius:18px;box-shadow:0 16px 45px #8d76521c}
+    .login-card h1{font:600 2rem/1.1 'Plus Jakarta Sans',sans-serif;color:#5f574c;letter-spacing:0;margin:0 0 28px}
+    .login-card label{color:#5f574c;font-size:.72rem}.login-card input{background:#fffdf8;border-color:#dfd1bd;border-radius:10px}
+    .login-card .primary{background:#b89a72;color:#fffaf0;border-radius:10px}.login-card .primary:hover{background:#a9875f}.login-aside{display:none}
+  </style>
 </head>
 <body>
   <main id="loginView" class="login-page">
     <section class="login-card">
-      <a class="brand" href="/">PARFI <span>JAWA TIMUR</span></a>
-      <p class="eyebrow">PRIVATE MANAGEMENT AREA</p>
-      <h1>AI Content<br><em>Center.</em></h1>
-      <p class="intro">Kelola konten organisasi secara aman dari ruang kerja pribadi Anda.</p>
+      <h1>Login</h1>
       <form id="loginForm" novalidate>
-        <label>Email<input name="email" type="email" autocomplete="email" required placeholder="nama@domain.com"></label>
-        <label>Password<input name="password" type="password" autocomplete="current-password" required placeholder="Masukkan password"></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
         <button class="button primary" type="submit" id="loginButton">Login <span>→</span></button>
         <p id="loginMessage" class="message" role="alert" aria-live="polite"></p>
       </form>
     </section>
-    <aside class="login-aside"><div class="orb"></div><p>PARFI JATIM</p><strong>Merawat cerita.<br>Menguatkan profesi.</strong></aside>
   </main>
 
   <main id="dashboardView" class="dashboard hidden">
