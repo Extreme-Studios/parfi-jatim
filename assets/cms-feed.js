@@ -32,9 +32,9 @@
     const archiveFeed = document.querySelector('#archiveFeed');
     const featuredNews = document.querySelector('#featuredNews');
     if (news.length && featuredNews) featuredNews.innerHTML = `<div class="story-mark">HEADLINE<br><span>${formatDate(news[0].tanggal)}</span></div><div>${news[0].gambar_url ? `<img src="${escapeHtml(news[0].gambar_url)}" alt="${escapeHtml(news[0].judul)}" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;margin-bottom:18px">` : ''}<p class="category">BERITA PARFI</p><h2>${escapeHtml(news[0].judul)}</h2><p>${escapeHtml(news[0].ringkasan || news[0].isi)}</p>${safeUrl(news[0].sumber_url || news[0].source_url) ? `<a class="story-link" href="${escapeHtml(safeUrl(news[0].sumber_url || news[0].source_url))}" target="_blank" rel="noopener noreferrer">Baca selengkapnya ↗</a>` : ''}</div>`;
-    if (news.length && newsFeed) newsFeed.innerHTML = news.slice(featuredNews ? 1 : 0, 6).map(newsCard).join('');
+    if (news.length && newsFeed) newsFeed.insertAdjacentHTML('afterbegin', news.slice(0, 6).map(newsCard).join(''));
     if (events.length && eventFeed) eventFeed.innerHTML = events.slice(0, 6).map(eventCard).join('');
-    if (news.length && archiveFeed) archiveFeed.innerHTML = news.map(archiveNewsCard).join('');
+    if (news.length && archiveFeed) archiveFeed.insertAdjacentHTML('afterbegin', news.map(archiveNewsCard).join(''));
     if (films.length && filmFeed) filmFeed.innerHTML = films.map(item => filmCard(item, Boolean(filmFeed.closest('.film-page')))).join('');
   }).catch(() => {});
 })();
