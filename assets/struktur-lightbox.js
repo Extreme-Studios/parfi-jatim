@@ -1,0 +1,27 @@
+(() => {
+  const images = [...document.querySelectorAll('.portrait img, .chair-image img')];
+  if (!images.length) return;
+  const lightbox = document.createElement('div');
+  lightbox.className = 'struktur-lightbox'; lightbox.hidden = true;
+  lightbox.innerHTML = '<div class="struktur-lightbox-tools"><button type="button" data-zoom="out" aria-label="Perkecil foto">−</button><button type="button" data-zoom="reset" aria-label="Ukuran normal">100%</button><button type="button" data-zoom="in" aria-label="Perbesar foto">+</button><button type="button" data-close aria-label="Tutup preview">×</button></div><figure><img alt=""></figure><p class="struktur-lightbox-hint">Pinch atau tombol +/- untuk zoom · Geser foto saat diperbesar · Klik di luar foto untuk menutup</p>';
+  document.body.appendChild(lightbox);
+  const figure = lightbox.querySelector('figure'), preview = figure.querySelector('img'), reset = lightbox.querySelector('[data-zoom="reset"]');
+  let scale = 1, x = 0, y = 0, drag = null, pinch = null;
+  const pointers = new Map();
+  const clamp = value => Math.max(.6, Math.min(3, value));
+  const render = () => { preview.style.transform = `translate3d(${x}px,${y}px,0) scale(${scale})`; reset.textContent = `${Math.round(scale * 100)}%`; };
+  const resetView = () => { scale = 1; x = 0; y = 0; render(); };
+  const open = image => { preview.src = image.currentSrc || image.src; preview.alt = image.alt; lightbox.hidden = false; document.body.style.overflow = 'hidden'; resetView(); };
+  const close = () => { lightbox.hidden = true; preview.removeAttribute('src'); document.body.style.overflow = ''; };
+  images.forEach(image => { image.tabIndex = 0; image.setAttribute('role', 'button'); image.setAttribute('aria-label', `Perbesar foto ${image.alt}`); image.addEventListener('click', () => open(image)); image.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(image); } }); });
+  lightbox.addEventListener('click', event => { if (event.target === lightbox || event.target.closest('[data-close]')) close(); });
+  lightbox.querySelector('[data-zoom="in"]').addEventListener('click', () => { scale = clamp(scale + .25); render(); });
+  lightbox.querySelector('[data-zoom="out"]').addEventListener('click', () => { scale = clamp(scale - .25); if (scale === 1) { x = 0; y = 0; } render(); });
+  reset.addEventListener('click', resetView);
+  figure.addEventListener('wheel', event => { event.preventDefault(); scale = clamp(scale + (event.deltaY < 0 ? .16 : -.16)); if (scale === 1) { x = 0; y = 0; } render(); }, { passive: false });
+  figure.addEventListener('pointerdown', event => { figure.setPointerCapture(event.pointerId); pointers.set(event.pointerId, { x: event.clientX, y: event.clientY }); if (pointers.size === 1) drag = { x: event.clientX, y: event.clientY, startX: x, startY: y }; if (pointers.size === 2) { const [a,b] = [...pointers.values()]; pinch = { distance: Math.hypot(a.x-b.x, a.y-b.y), scale }; } });
+  figure.addEventListener('pointermove', event => { if (!pointers.has(event.pointerId)) return; pointers.set(event.pointerId, { x: event.clientX, y: event.clientY }); if (pointers.size === 2 && pinch) { const [a,b] = [...pointers.values()]; scale = clamp(pinch.scale * Math.hypot(a.x-b.x, a.y-b.y) / pinch.distance); render(); } else if (drag && scale > 1) { x = drag.startX + event.clientX - drag.x; y = drag.startY + event.clientY - drag.y; render(); } });
+  const release = event => { pointers.delete(event.pointerId); if (pointers.size < 2) pinch = null; if (!pointers.size) drag = null; };
+  figure.addEventListener('pointerup', release); figure.addEventListener('pointercancel', release);
+  document.addEventListener('keydown', event => { if (!lightbox.hidden && event.key === 'Escape') close(); });
+})();

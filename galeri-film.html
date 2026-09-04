@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Koleksi trailer film dan karya audio visual PARFI Jawa Timur.">
+  <title>Galeri Film — PARFI Jawa Timur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/branding.css">
+  <style>
+    :root{--film-ink:#f4f0e8;--film-muted:#a9b0bb;--film-gold:#d5a934;--film-bg:#081426;--film-panel:#101f35}
+    *{box-sizing:border-box}body{margin:0;background:var(--film-bg);color:var(--film-ink);font-family:'Plus Jakarta Sans',sans-serif}.film-page{min-height:100vh;position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(circle at 85% 15%,#1d3658 0,transparent 34%),var(--film-bg)}.film-page:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:var(--page-art,url('images/hero-parfi-filmset.png')) center/cover no-repeat;opacity:.08;mix-blend-mode:screen;filter:saturate(.65)}
+    .film-header{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:auto;padding:25px 6vw;border-bottom:1px solid #ffffff1a}.film-brand{display:flex;align-items:center;gap:12px;color:var(--film-ink);text-decoration:none}.film-brand img{width:54px;height:54px;object-fit:contain}.film-brand b{display:block;font-family:'DM Serif Display',serif;font-size:1.2rem}.film-brand small{display:block;color:var(--film-gold);font:600 .55rem 'IBM Plex Mono';letter-spacing:.15em}.film-back{color:var(--film-muted);text-decoration:none;font:500 .7rem 'IBM Plex Mono';letter-spacing:.08em;text-transform:uppercase}.film-back:hover{color:var(--film-gold)}
+    .film-hero{max-width:1280px;margin:auto;padding:70px 6vw 52px}.film-kicker{color:var(--film-gold);font:600 .68rem 'IBM Plex Mono';letter-spacing:.16em;text-transform:uppercase}.film-hero h1{font:400 clamp(2.5rem,5.5vw,5.3rem)/.98 'DM Serif Display',serif;letter-spacing:-.045em;margin:15px 0 18px;max-width:820px}.film-hero h1 em{color:var(--film-gold);font-style:normal}.film-hero p{max-width:650px;color:var(--film-muted);line-height:1.7;margin:0;font-size:.92rem}
+    .film-grid{max-width:1280px;margin:auto;padding:0 6vw 100px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}.film-card{background:var(--film-panel);border:1px solid #ffffff1a;overflow:hidden;box-shadow:0 18px 45px #0004}.film-card-cover{aspect-ratio:2/3;background:#172b47;overflow:hidden}.film-card-cover img{width:100%;height:100%;display:block;object-fit:cover}.film-card-body{padding:25px}.film-card-label{color:var(--film-gold);font:600 .62rem 'IBM Plex Mono';letter-spacing:.12em;text-transform:uppercase}.film-card h2{font:400 clamp(1.7rem,3vw,2.45rem)/1.05 'DM Serif Display',serif;margin:12px 0}.film-card p{color:var(--film-muted);line-height:1.7;font-size:.9rem;margin:0 0 22px}.film-watch{display:inline-flex;align-items:center;gap:9px;background:var(--film-gold);color:#10151d;padding:12px 16px;text-decoration:none;font-size:.78rem;font-weight:800}.film-watch:hover{background:#f0c85a}.film-empty{grid-column:1/-1;border:1px dashed #ffffff2b;padding:34px;color:var(--film-muted);line-height:1.7}.film-empty strong{display:block;color:var(--film-ink);font-family:'DM Serif Display',serif;font-size:1.8rem;font-weight:400;margin-bottom:8px}
+    .film-video{position:relative;aspect-ratio:16/9;background:#000;margin:0 25px 24px;overflow:hidden}.film-video iframe{width:100%;height:100%;border:0;display:block}.film-card-wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(220px,.38fr) minmax(0,.62fr);position:relative;isolation:isolate}.film-card-wide:before{content:"";position:absolute;inset:0;z-index:-1;background:var(--film-art) center/cover no-repeat;opacity:.12;filter:saturate(.7)}.film-card-wide .film-card-cover{height:560px;min-height:560px;align-self:start}.film-card-wide .film-card-cover img{object-fit:contain;background:#172b47}.film-card-wide .film-card-body{padding:28px}.film-card-wide h2{display:none}
+    .film-footer{text-align:center;border-top:1px solid #ffffff1a;padding:30px 6vw 36px;color:var(--film-muted);font-size:.72rem}.film-footer a{color:var(--film-gold);text-decoration:none}.film-footer p{margin:5px 0}
+     @media(max-width:720px){.film-header{padding:18px 6vw}.film-brand img{width:46px;height:46px}.film-hero{padding:65px 6vw 48px}.film-grid{grid-template-columns:1fr;padding-bottom:70px}.film-card-body{padding:21px}.film-card-wide{display:block}.film-card-wide .film-card-cover{height:auto;min-height:0;aspect-ratio:2/3}.film-video{margin-left:0;margin-right:0}.film-back{font-size:.62rem}}
+     .film-card-wide .film-card-body>p{margin-left:25px;margin-right:25px;text-align:justify}
+     .film-card-wide .film-card-body>.film-card-label{display:block;margin-left:25px;margin-right:25px}
+     .film-card{position:relative;transform:translateY(0) perspective(1000px);transform-style:preserve-3d;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;border-color:#d7a42e33}
+     .film-card:hover,.film-card:focus-within{transform:perspective(1000px) translateY(-10px) rotateX(1.2deg) rotateY(-1.2deg);border-color:#d7a42e99;box-shadow:0 28px 48px #0009,0 0 28px #071d3d}
+     .film-card-cover img{transition:transform .32s ease,filter .32s ease}
+     .film-card:hover .film-card-cover img,.film-card:focus-within .film-card-cover img{transform:translateZ(14px) scale(1.025);filter:brightness(1.08) saturate(1.06)}
+     .film-watch{transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+     .film-watch:hover,.film-watch:focus-visible{transform:translateY(-2px);box-shadow:0 8px 16px #0007;background:#f0c85a}
+     @media(max-width:720px){.film-card-wide .film-card-body>p,.film-card-wide .film-card-body>.film-card-label{margin-left:0;margin-right:0}}
+  </style>
+</head>
+<body>
+  <div class="film-page">
+    <header class="film-header">
+      <a class="film-brand" href="index.html" aria-label="Kembali ke beranda PARFI Jawa Timur"><img src="assets/images/logo-parfi-asli.jpeg" alt="Logo PARFI Jawa Timur"><span><b>PARFI</b><small>JAWA TIMUR</small></span></a>
+      <a class="film-back" href="index.html">← Kembali ke beranda</a>
+    </header>
+    <main>
+      <section class="film-hero"><div class="film-kicker">GALERI FILM · PARFI JAWA TIMUR</div><h1>Ruang untuk karya<br><em>insan film.</em></h1><p>Koleksi trailer, karya audio visual, dan cerita perfilman yang dihimpun oleh PARFI Jawa Timur. Pilih sebuah karya untuk melihat detail dan menonton trailernya langsung di halaman ini.</p></section>
+      <section class="film-grid" aria-label="Koleksi trailer film">
+        <article class="film-card film-card-wide" id="trailer-01" style="--film-art:url(assets/images/bangsal-isolasi.jpeg);--page-art:url(assets/images/bangsal-isolasi.jpeg)"><div class="film-card-cover"><img src="assets/images/bangsal-isolasi.jpeg" alt="Poster film Bangsal Isolasi"></div><div class="film-card-body"><div class="film-video"><iframe src="https://www.youtube.com/embed/ebOr2ZFtNEc" title="Trailer Bangsal Isolasi" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><p>Weni menyamar sebagai narapidana untuk mengungkap kematian misterius adiknya di sebuah lapas. Penyelidikannya membawanya ke Bangsal Isolasi, ruang terlarang yang dipercaya menyimpan kutukan dan rahasia mengerikan. Di sana, Weni harus mengungkap kebenaran sebelum menjadi korban berikutnya.</p><div class="film-card-label">MESARI PICTURES · JP PICTURES</div></div></article>
+        <article class="film-card film-card-wide" id="trailer-02" style="--film-art:url(assets/images/narik-sukmo.jpg);--page-art:url(assets/images/narik-sukmo.jpg)"><div class="film-card-cover"><img src="assets/images/narik-sukmo.jpg" alt="Poster film Narik Sukmo"></div><div class="film-card-body"><div class="film-video"><iframe src="https://www.youtube.com/embed/V5opxxeLVxs" title="Trailer Narik Sukmo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><p>Kenara mengunjungi Desa Kelawangin dan menerima selendang misterius yang ternyata berkaitan dengan seorang penari masa lalu. Sejak itu, ia mengalami teror gaib dan tubuhnya mulai menari sendiri. Kenara kemudian terjebak dalam kutukan Narik Sukmo, sebuah ritual yang menyimpan dendam dan rahasia kelam desa. Bersama Dirja, ia berusaha mengungkap kebenaran sebelum nyawanya menjadi tumbal.</p><div class="film-card-label">MESARI PICTURES · JP PICTURES</div></div></article>
+      </section>
+    </main>
+    <footer class="film-footer"><p>© 2026 PARFI Jatim. All Rights Reserved.</p><p>this site powered by <a href="https://extremestudiosai.com" target="_blank" rel="noopener noreferrer">Extreme Studios</a></p></footer>
+  </div>
+  <script src="assets/reva-global.js"></script>
+</body>
+</html>
+
+
