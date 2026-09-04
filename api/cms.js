@@ -2,6 +2,7 @@ module.exports = async (req, res) => {
   const endpoint = process.env.PARFI_CMS_ENDPOINT;
   if (!endpoint) return res.status(503).json({ ok: false, error: 'Panel sedang disiapkan. Coba beberapa saat lagi.' });
   try {
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
     const url = new URL(endpoint);
     if (req.method === 'GET') Object.entries(req.query || {}).forEach(([key, value]) => url.searchParams.set(key, value));
     const response = await fetch(url.toString(), {

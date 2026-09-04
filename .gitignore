@@ -4,3 +4,4 @@ all-contact-*.jpg
 tmp-contact.jpg
 tmp-pengurus-*.jpg
 assets/images/struktur-preview/all-pengurus-*.jpg
+.env*

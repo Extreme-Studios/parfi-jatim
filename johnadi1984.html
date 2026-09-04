@@ -2,16 +2,47 @@
 <html lang="id">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow"><title>AI Content Center — PARFI Jatim</title>
+  <title>AI Content Center · PARFI Jawa Timur</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/johnadi1984.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/private-admin.css">
+  <style>
+    .login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f3eadb;padding:24px}
+    .login-card{width:min(100%,380px);padding:42px;background:#fffaf0;border:1px solid #e5d8c5;border-radius:18px;box-shadow:0 16px 45px #8d76521c}
+    .login-card h1{font:600 2rem/1.1 'Plus Jakarta Sans',sans-serif;color:#5f574c;letter-spacing:0;margin:0 0 28px}
+    .login-card label{color:#5f574c;font-size:.72rem}.login-card input{background:#fffdf8;border-color:#dfd1bd;border-radius:10px}
+    .login-card .primary{background:#b89a72;color:#fffaf0;border-radius:10px}.login-card .primary:hover{background:#a9875f}.login-aside{display:none}
+  </style>
 </head>
 <body>
-  <main class="auth-wrap" id="authLoading"><p class="loading">Memeriksa sesi aman…</p></main>
-  <main class="login-shell" id="loginView" hidden><section class="login-panel"><a class="auth-brand" href="/"><img src="assets/images/logo-parfi-asli.jpeg" alt="Logo PARFI"><span><b>PARFI</b><small>JAWA TIMUR</small></span></a><p class="kicker login-kicker">PANEL PENGELOLAAN</p><h1>Masuk ke panel<br><em>pribadi.</em></h1><p class="login-copy">Kelola link berita, film, dan agenda PARFI Jawa Timur dari satu tempat.</p><form id="loginForm"><label class="field"><span>Email</span><input id="email" type="email" autocomplete="email" required placeholder="Email Supabase"></label><label class="field"><span>Password</span><input id="password" type="password" autocomplete="current-password" required placeholder="Password"></label><button class="primary" id="loginButton" type="submit">Masuk ke panel <span>→</span></button><p class="form-message" id="loginMessage" aria-live="polite"></p></form></section><aside class="login-art"><div class="film-frame"></div><div class="art-copy"><p>AI CONTENT CENTER</p><b>Kelola link.<br>Jaga cerita.</b></div></aside></main>
-  <main class="dashboard" id="dashboardView" hidden><aside class="sidebar"><a class="dashboard-brand" href="index.html"><img src="assets/images/logo-parfi-asli.jpeg" alt="Logo PARFI"><span><b>PARFI</b><small>JAWA TIMUR</small></span></a><nav class="menu" aria-label="Menu AI Content Center"><button type="button" data-center="Tambah Berita"><span>01</span><strong>Tambah Berita</strong></button><button type="button" data-center="Tambah Film"><span>02</span><strong>Tambah Film</strong></button><button type="button" data-center="Tambah Agenda"><span>03</span><strong>Tambah Agenda</strong></button></nav><div class="sidebar-footer"><p class="kicker">Akun aktif</p><span id="accountEmail"></span><button class="logout" id="logoutButton" type="button">Logout</button></div></aside><section class="workspace"><header class="workspace-header"><div><p class="kicker">Private management</p><h1>AI Content Center</h1></div><p class="private-label">Sesi dilindungi Supabase Auth</p></header><section class="center"><p class="kicker">Pusat konten</p><h2>Kelola konten tanpa mengubah website publik.</h2><p>Untuk saat ini setiap menu adalah placeholder. Penambahan form dan publikasi akan dibuat pada tahap berikutnya.</p><div class="center-grid"><button type="button" data-center="Tambah Berita"><span>01 · BERITA</span><strong>Tambah Berita</strong></button><button type="button" data-center="Tambah Film"><span>02 · GALERI</span><strong>Tambah Film</strong></button><button type="button" data-center="Tambah Agenda"><span>03 · AGENDA</span><strong>Tambah Agenda</strong></button></div><article class="placeholder"><h3 id="centerTitle">Pilih menu untuk memulai.</h3><p id="centerCopy">Belum ada konten yang dapat diubah dari panel ini.</p></article></section></section></main>
+  <main id="loginView" class="login-page">
+    <section class="login-card">
+      <h1>Login</h1>
+      <form id="loginForm" novalidate>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="button primary" type="submit" id="loginButton">Login <span>→</span></button>
+        <p id="loginMessage" class="message" role="alert" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <main id="dashboardView" class="dashboard hidden">
+    <aside class="sidebar">
+      <a class="brand" href="/">PARFI <span>JAWA TIMUR</span></a>
+      <p class="eyebrow">AI CONTENT CENTER</p>
+      <nav aria-label="Menu private">
+        <button class="nav-item" data-section="news">Berita</button>
+        <button class="nav-item" data-section="film">Trailer</button>
+        <button class="nav-item" data-section="agenda">Agenda</button>
+      </nav>
+      <div class="account"><span id="userEmail">Pengelola</span><button id="logoutButton" class="logout">Logout</button></div>
+    </aside>
+    <section class="content"><header><div><p class="eyebrow" id="sectionEyebrow">PRIVATE DASHBOARD</p><h2 id="sectionTitle">Selamat datang.</h2></div><a href="/" class="site-link">Lihat website ↗</a></header>
+      <section id="workspacePanel" class="workspace-panel"></section>
+    </section>
+  </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="assets/supabase-client.js"></script><script src="assets/johnadi1984-auth.js"></script>
+  <script src="assets/private-admin.js"></script>
 </body>
 </html>
