@@ -31,6 +31,21 @@
   };
   const archiveNewsCard = item => { const source = safeUrl(item.sumber_url || item.source_url), image = imageUrl(item.gambar_url); if (!source) return ''; return `<a class="archive-card" href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer">${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(item.judul)}" loading="lazy">` : ''}<div class="archive-card-copy"><p class="category">${formatDate(item.tanggal)}</p><h2>${escapeHtml(item.judul)}</h2><p>${escapeHtml(item.ringkasan || item.isi)}</p><p class="archive-source">Sumber: berita asli</p><span class="archive-open">Baca selengkapnya ↗</span></div></a>`; };
   const filmCard = (item, detailed) => { const video = safeUrl(item.video_url || item.source_url); if (!detailed) return `<a class="film-teaser-card" href="${escapeHtml(video || '#')}" ${video ? 'target="_blank" rel="noopener noreferrer"' : ''}>${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="${escapeHtml(item.judul)}" loading="lazy">` : ''}<span>${escapeHtml(item.judul)}</span><b>${video ? '▶ Tonton trailer' : 'Lihat karya'}</b></a>`; return `<article class="film-card"><div class="film-card-cover">${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="Poster ${escapeHtml(item.judul)}" loading="lazy">` : ''}</div><div class="film-card-body"><h2>${escapeHtml(item.judul)}</h2><p>${escapeHtml(item.sinopsis || item.ringkasan || 'Sinopsis belum tersedia.')}</p>${video ? `<a class="film-watch" href="${escapeHtml(video)}" target="_blank" rel="noopener noreferrer">▶ Tonton trailer</a>` : ''}</div></article>`; };
+  const visualUrls = (items, feed) => [...new Set([
+    ...items.map(item => imageUrl(item.gambar_url)).filter(Boolean),
+    ...(feed ? [...feed.querySelectorAll('img')].map(image => image.currentSrc || image.src).filter(Boolean) : []),
+  ])];
+  const installBackdrop = (selector, urls, type) => {
+    const section = document.querySelector(selector);
+    if (!section || !urls.length) return;
+    section.querySelector('.section-visual-backdrop')?.remove();
+    const backdrop = document.createElement('div');
+    backdrop.className = `section-visual-backdrop section-visual-backdrop--${type}`;
+    backdrop.setAttribute('aria-hidden', 'true');
+    const repeated = Array.from({ length: Math.max(4, urls.length) }, (_, index) => urls[index % urls.length]);
+    backdrop.innerHTML = repeated.map(url => `<span><img src="${escapeHtml(url)}" alt=""></span>`).join('');
+    section.prepend(backdrop);
+  };
   Promise.allSettled([getPublished('news'), getPublished('event'), getPublished('film')]).then(results => {
     let news = results[0].status === 'fulfilled' ? results[0].value : [];
     let events = results[1].status === 'fulfilled' ? results[1].value : [];
@@ -50,5 +65,8 @@
     if (events.length && eventFeed) eventFeed.innerHTML = events.slice(0, 6).map(eventCard).join('');
     if (news.length && archiveFeed) archiveFeed.insertAdjacentHTML('afterbegin', news.map(archiveNewsCard).join(''));
     if (films.length && filmFeed) filmFeed.innerHTML = films.map(item => filmCard(item, Boolean(filmFeed.closest('.film-page')))).join('');
+    installBackdrop('#berita', visualUrls(news, newsFeed), 'news');
+    installBackdrop('#agenda', visualUrls(events, eventFeed), 'agenda');
+    installBackdrop('#galeri-film', visualUrls(films, filmFeed), 'film');
   }).catch(() => {});
 })();
