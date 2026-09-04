@@ -22,9 +22,9 @@
   const archiveNewsCard = item => { const source = safeUrl(item.sumber_url || item.source_url); if (!source) return ''; return `<a class="archive-card" href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer">${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="${escapeHtml(item.judul)}" loading="lazy">` : ''}<div class="archive-card-copy"><p class="category">${formatDate(item.tanggal)}</p><h2>${escapeHtml(item.judul)}</h2><p>${escapeHtml(item.ringkasan || item.isi)}</p><p class="archive-source">Sumber: berita asli</p><span class="archive-open">Baca selengkapnya ↗</span></div></a>`; };
   const filmCard = (item, detailed) => { const video = safeUrl(item.video_url || item.source_url); if (!detailed) return `<a class="film-teaser-card" href="${escapeHtml(video || '#')}" ${video ? 'target="_blank" rel="noopener noreferrer"' : ''}>${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="${escapeHtml(item.judul)}" loading="lazy">` : ''}<span>${escapeHtml(item.judul)}</span><b>${video ? '▶ Tonton trailer' : 'Lihat karya'}</b></a>`; return `<article class="film-card"><div class="film-card-cover">${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="Poster ${escapeHtml(item.judul)}" loading="lazy">` : ''}</div><div class="film-card-body"><h2>${escapeHtml(item.judul)}</h2><p>${escapeHtml(item.sinopsis || item.ringkasan || 'Sinopsis belum tersedia.')}</p>${video ? `<a class="film-watch" href="${escapeHtml(video)}" target="_blank" rel="noopener noreferrer">▶ Tonton trailer</a>` : ''}</div></article>`; };
   Promise.allSettled([getPublished('news'), getPublished('event'), getPublished('film')]).then(results => {
-    const news = results[0].status === 'fulfilled' ? results[0].value : [];
-    const events = results[1].status === 'fulfilled' ? results[1].value : [];
-    const films = results[2].status === 'fulfilled' ? results[2].value : [];
+    let news = results[0].status === 'fulfilled' ? results[0].value : [];
+    let events = results[1].status === 'fulfilled' ? results[1].value : [];
+    let films = results[2].status === 'fulfilled' ? results[2].value : [];
     news = sortNewest(news); events = sortNewest(events); films = sortNewest(films);
     const newsFeed = document.querySelector('#newsFeed');
     const eventFeed = document.querySelector('#eventFeed');
