@@ -13,7 +13,7 @@
   let scale = 1, x = 0, y = 0, drag = null, pinch = null;
   const render = () => { preview.style.transform = `translate3d(${x}px,${y}px,0) scale(${scale})`; lightbox.querySelector('[data-zoom="reset"]').textContent = `${Math.round(scale * 100)}%`; };
   const reset = () => { scale = 1; x = 0; y = 0; render(); };
-  const setScale = (next) => { scale = Math.min(4, Math.max(1, next)); if (scale === 1) { x = 0; y = 0; } render(); };
+  const setScale = (next) => { scale = Math.min(4, Math.max(.6, next)); render(); };
   const close = () => { lightbox.hidden = true; document.body.style.overflow = ''; reset(); };
   feed.addEventListener('click', (event) => { const image = event.target.closest('.agenda-poster-item > img'); if (!image) return; event.preventDefault(); preview.src = image.currentSrc || image.src; preview.alt = image.alt; lightbox.hidden = false; document.body.style.overflow = 'hidden'; reset(); });
   lightbox.querySelector('[data-close]').addEventListener('click', close);
