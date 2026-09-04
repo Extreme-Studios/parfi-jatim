@@ -8,7 +8,7 @@
   lightbox.className = 'agenda-lightbox'; lightbox.hidden = true;
   lightbox.innerHTML = `<div class="agenda-lightbox-tools"><button type="button" data-zoom="out" aria-label="Perkecil poster">−</button><button type="button" data-zoom="reset" aria-label="Ukuran normal">100%</button><button type="button" data-zoom="in" aria-label="Perbesar poster">+</button><button type="button" data-close aria-label="Tutup preview">×</button></div><figure><img alt=""></figure><div class="agenda-lightbox-hint">Pinch atau tombol +/- untuk zoom · Geser poster saat diperbesar · Klik di luar poster untuk menutup</div>`;
   document.body.appendChild(lightbox);
-  const preview = lightbox.querySelector('img');
+  const preview = lightbox.querySelector('img'); preview.draggable = false;
   const stage = lightbox.querySelector('figure');
   let scale = 1, x = 0, y = 0, drag = null, pinch = null;
   const render = () => { preview.style.transform = `translate3d(${x}px,${y}px,0) scale(${scale})`; lightbox.querySelector('[data-zoom="reset"]').textContent = `${Math.round(scale * 100)}%`; };
@@ -20,8 +20,8 @@
   lightbox.querySelectorAll('[data-zoom]').forEach((button) => button.addEventListener('click', () => { const action = button.dataset.zoom; if (action === 'in') setScale(scale + .25); if (action === 'out') setScale(scale - .25); if (action === 'reset') reset(); }));
   lightbox.addEventListener('click', (event) => { if (event.target === lightbox) close(); });
   stage.addEventListener('wheel', (event) => { event.preventDefault(); setScale(scale + (event.deltaY < 0 ? .15 : -.15)); }, { passive: false });
-  stage.addEventListener('pointerdown', (event) => { if (event.pointerType === 'touch') return; stage.setPointerCapture(event.pointerId); drag = { x: event.clientX, y: event.clientY, startX: x, startY: y }; });
-  stage.addEventListener('pointermove', (event) => { if (!drag) return; x = drag.startX + event.clientX - drag.x; y = drag.startY + event.clientY - drag.y; render(); });
+  stage.addEventListener('pointerdown', (event) => { if (event.pointerType === 'touch') return; event.preventDefault(); stage.setPointerCapture(event.pointerId); drag = { x: event.clientX, y: event.clientY, startX: x, startY: y }; });
+  stage.addEventListener('pointermove', (event) => { if (!drag || scale <= 1) return; event.preventDefault(); x = drag.startX + event.clientX - drag.x; y = drag.startY + event.clientY - drag.y; render(); });
   stage.addEventListener('pointerup', () => { drag = null; });
   stage.addEventListener('touchstart', (event) => { if (event.touches.length === 2) { const a = event.touches[0], b = event.touches[1]; pinch = { distance: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), scale }; } else if (event.touches.length === 1) { const t = event.touches[0]; drag = { x: t.clientX, y: t.clientY, startX: x, startY: y }; } }, { passive: false });
   stage.addEventListener('touchmove', (event) => { event.preventDefault(); if (event.touches.length === 2 && pinch) { const a = event.touches[0], b = event.touches[1]; setScale(pinch.scale * Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) / pinch.distance); } else if (event.touches.length === 1 && drag) { const t = event.touches[0]; x = drag.startX + t.clientX - drag.x; y = drag.startY + t.clientY - drag.y; render(); } }, { passive: false });
