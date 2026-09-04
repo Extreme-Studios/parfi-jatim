@@ -7,11 +7,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" },
-    {
-      "source": "/",
-      "has": [{ "type": "host", "value": "panel.parfi-jatim.extremestudiosai.com" }],
-      "destination": "/admin.html"
-    }
+    { "source": "/johnadi1984", "destination": "/johnadi1984.html" }
   ]
 }

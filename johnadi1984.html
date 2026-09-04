@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>AI Content Center — PARFI Jatim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/johnadi1984.css">
+</head>
+<body>
+  <main class="auth-wrap" id="authLoading"><p class="loading">Memeriksa sesi aman…</p></main>
+  <main class="auth-wrap" id="loginView" hidden><section class="auth-card"><div class="auth-brand"><img src="assets/images/logo-parfi-asli.jpeg" alt="Logo PARFI"><span><b>PARFI</b><small>JAWA TIMUR</small></span></div><h1>AI Content<br>Center.</h1><p>Akses khusus pengelola website PARFI Jawa Timur.</p><form id="loginForm"><label class="field"><span>Email</span><input id="email" type="email" autocomplete="email" required></label><label class="field"><span>Password</span><input id="password" type="password" autocomplete="current-password" required></label><button class="primary" id="loginButton" type="submit">Login</button><p class="form-message" id="loginMessage" aria-live="polite"></p></form></section></main>
+  <main class="dashboard" id="dashboardView" hidden><aside class="sidebar"><a class="dashboard-brand" href="index.html"><img src="assets/images/logo-parfi-asli.jpeg" alt="Logo PARFI"><span><b>PARFI</b><small>JAWA TIMUR</small></span></a><nav class="menu" aria-label="Menu AI Content Center"><button type="button" data-center="Tambah Berita"><span>01</span><strong>Tambah Berita</strong></button><button type="button" data-center="Tambah Film"><span>02</span><strong>Tambah Film</strong></button><button type="button" data-center="Tambah Agenda"><span>03</span><strong>Tambah Agenda</strong></button></nav><div class="sidebar-footer"><p class="kicker">Akun aktif</p><span id="accountEmail"></span><button class="logout" id="logoutButton" type="button">Logout</button></div></aside><section class="workspace"><header class="workspace-header"><div><p class="kicker">Private management</p><h1>AI Content Center</h1></div><p class="private-label">Sesi dilindungi Supabase Auth</p></header><section class="center"><p class="kicker">Pusat konten</p><h2>Kelola konten tanpa mengubah website publik.</h2><p>Untuk saat ini setiap menu adalah placeholder. Penambahan form dan publikasi akan dibuat pada tahap berikutnya.</p><div class="center-grid"><button type="button" data-center="Tambah Berita"><span>01 · BERITA</span><strong>Tambah Berita</strong></button><button type="button" data-center="Tambah Film"><span>02 · GALERI</span><strong>Tambah Film</strong></button><button type="button" data-center="Tambah Agenda"><span>03 · AGENDA</span><strong>Tambah Agenda</strong></button></div><article class="placeholder"><h3 id="centerTitle">Pilih menu untuk memulai.</h3><p id="centerCopy">Belum ada konten yang dapat diubah dari panel ini.</p></article></section></section></main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/supabase-client.js"></script><script src="assets/johnadi1984-auth.js"></script>
+</body>
+</html>
