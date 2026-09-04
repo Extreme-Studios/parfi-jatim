@@ -11,15 +11,6 @@
     if (!data.ok) throw new Error(data.error || 'Konten belum tersedia.');
     return (data.items || []).filter(item => item.status === 'PUBLISH');
   };
-  const isAgendaVisible = item => {
-    const endDate = item.tanggal_selesai || item.end_date || item.tanggal_mulai || item.date;
-    if (!endDate) return true;
-    const parsed = new Date(`${endDate}T00:00:00`);
-    if (Number.isNaN(parsed.valueOf())) return true;
-    parsed.setDate(parsed.getDate() + 2);
-    const today = new Date(); today.setHours(0, 0, 0, 0);
-    return today < parsed;
-  };
   const newsCard = item => `<article>${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="${escapeHtml(item.judul)}" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;margin-bottom:16px">` : ''}<p class="category">${formatDate(item.tanggal)}</p><h3>${escapeHtml(item.judul)}</h3><p>${escapeHtml(item.ringkasan || item.isi)}</p></article>`;
   const eventCard = (item, index) => `<div class="${item.agendaPoster ? 'agenda-poster-item' : ''}">${item.gambar_url ? `<img src="${escapeHtml(item.gambar_url)}" alt="${escapeHtml(item.nama_event)}" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;margin-bottom:16px">` : ''}<span>${String(index + 1).padStart(2, '0')}</span><h3>${escapeHtml(item.nama_event)}</h3><p>${formatDate(item.tanggal_mulai)}${item.lokasi ? ` · ${escapeHtml(item.lokasi)}` : ''}${item.ringkasan ? `<br>${escapeHtml(item.ringkasan)}` : ''}</p></div>`;
   const previousActing = { agendaPoster: true, nama_event: 'Workshop Acting PARFI Jawa Timur', lokasi: 'Jawa Timur', ringkasan: '3 kali pertemuan · Pengampu: Susilo Badar', gambar_url: 'assets/images/workshop-acting.jpg', status: 'PUBLISH' };
@@ -29,6 +20,6 @@
     const newsFeed = document.querySelector('#newsFeed');
     const eventFeed = document.querySelector('#eventFeed');
     if (news.length && newsFeed) newsFeed.innerHTML = news.slice(0, 6).map(newsCard).join('');
-    if (eventFeed) eventFeed.innerHTML = [previousActing, previousProduction, kediriWorkshop, ...events].filter(isAgendaVisible).slice(0, 6).map(eventCard).join('');
+    if (eventFeed) eventFeed.innerHTML = [previousActing, previousProduction, kediriWorkshop, ...events].slice(0, 6).map(eventCard).join('');
   }).catch(() => {});
 })();
