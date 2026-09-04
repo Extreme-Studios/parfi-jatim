@@ -215,7 +215,7 @@ function saveImage_(dataUrl, fileName) {
   const safeName = String(fileName).replace(/[^a-zA-Z0-9._-]/g, '-');
   const file = DriveApp.getFolderById(CMS.mediaFolderId).createFile(Utilities.newBlob(bytes, match[1], safeName));
   file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-  return { id: file.getId(), url: 'https://drive.google.com/uc?export=view&id=' + file.getId() };
+  return { id: file.getId(), url: 'https://drive.google.com/thumbnail?id=' + file.getId() + '&sz=w1600' };
 }
 
 function findRow_(sheet, headers, id) {
