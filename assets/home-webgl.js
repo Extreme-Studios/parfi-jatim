@@ -60,7 +60,6 @@
   const decorateSectionText = (root = document) => {
     root.querySelectorAll([
       '.ticker span', '.ticker p', '#sambutan h2', '#sambutan p',
-      '#berita .section-kicker', '#berita h2', '#berita h3', '#berita p',
       '#agenda .section-kicker', '#agenda h2', '#agenda h3', '#agenda p',
       '#galeri-film .section-kicker', '#galeri-film h2', '#galeri-film p',
       '#tentang .section-kicker', '#tentang h2', '#tentang h3', '#tentang p',
