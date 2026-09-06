@@ -16,15 +16,37 @@
     hero.append(layer);
   });
 
+  let pointerX = 0;
+  let pointerY = 0;
+  let gyroX = 0;
+  let gyroY = 0;
   let targetX = 0;
   let targetY = 0;
   let currentX = 0;
   let currentY = 0;
   const setParallax = () => {
-    currentX += (targetX - currentX) * .075;
-    currentY += (targetY - currentY) * .075;
+    currentX += (targetX - currentX) * .105;
+    currentY += (targetY - currentY) * .105;
     document.documentElement.style.setProperty('--home-parallax-x', currentX.toFixed(3));
     document.documentElement.style.setProperty('--home-parallax-y', currentY.toFixed(3));
+    document.documentElement.style.setProperty('--home-parallax-x-small', `${(currentX * 16).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-y-small', `${(currentY * 12).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-x-small-neg', `${(currentX * -16).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-y-small-neg', `${(currentY * -12).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-x-medium', `${(currentX * 31).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-y-medium', `${(currentY * 24).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-x-medium-neg', `${(currentX * -31).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-y-medium-neg', `${(currentY * -24).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-x-strong', `${(currentX * 48).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-y-strong', `${(currentY * 38).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-x-strong-neg', `${(currentX * -48).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-y-strong-neg', `${(currentY * -38).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-parallax-x-percent', `${(currentX * 11).toFixed(2)}%`);
+    document.documentElement.style.setProperty('--home-parallax-y-percent', `${(currentY * 9).toFixed(2)}%`);
+  };
+  const updateTarget = () => {
+    targetX = Math.max(-1, Math.min(1, pointerX * 1.18 + gyroX * .82));
+    targetY = Math.max(-1, Math.min(1, pointerY * 1.18 + gyroY * .82));
   };
 
   const scenes = [
@@ -58,10 +80,38 @@
   window.addEventListener('scroll', requestSceneUpdate, { passive: true });
   window.addEventListener('resize', requestSceneUpdate, { passive: true });
   window.addEventListener('pointermove', (event) => {
-    targetX = Math.max(-1, Math.min(1, event.clientX / window.innerWidth * 2 - 1));
-    targetY = Math.max(-1, Math.min(1, event.clientY / window.innerHeight * 2 - 1));
+    pointerX = Math.max(-1, Math.min(1, event.clientX / window.innerWidth * 2 - 1));
+    pointerY = Math.max(-1, Math.min(1, event.clientY / window.innerHeight * 2 - 1));
+    updateTarget();
   }, { passive: true });
-  window.addEventListener('pointerleave', () => { targetX = 0; targetY = 0; }, { passive: true });
+  window.addEventListener('pointerleave', () => { pointerX = 0; pointerY = 0; updateTarget(); }, { passive: true });
+
+  const orientation = (event) => {
+    if (!Number.isFinite(event.gamma) || !Number.isFinite(event.beta)) return;
+    gyroX = Math.max(-1, Math.min(1, event.gamma / 28));
+    gyroY = Math.max(-1, Math.min(1, event.beta / 40));
+    hero.classList.add('gyro-active');
+    updateTarget();
+  };
+  const enableGyro = () => window.addEventListener('deviceorientation', orientation, true);
+  if ('DeviceOrientationEvent' in window) {
+    if (typeof window.DeviceOrientationEvent.requestPermission === 'function') {
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'home-gyro-toggle';
+      toggle.textContent = 'Aktifkan gerak ponsel';
+      toggle.addEventListener('click', async () => {
+        try {
+          const permission = await window.DeviceOrientationEvent.requestPermission();
+          if (permission !== 'granted') return;
+          enableGyro(); toggle.remove();
+        } catch (_) {}
+      });
+      hero.append(toggle);
+    } else {
+      enableGyro();
+    }
+  }
 
   const gl = canvas.getContext('webgl', { alpha: true, antialias: false, powerPreference: 'low-power' });
   if (!gl) {
