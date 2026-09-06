@@ -87,6 +87,16 @@ body.home-webgl {
   position: relative;
   overflow: hidden;
 }
+.home-webgl .join {
+  padding-top: clamp(58px, 6vw, 82px);
+  padding-bottom: clamp(62px, 6.5vw, 88px);
+}
+.home-webgl .join h2 {
+  font-size: clamp(2.75rem, 5.3vw, 5.15rem) !important;
+  line-height: 1.02 !important;
+  margin: 14px 0 !important;
+}
+.home-webgl .join > p:not(.eyebrow) { margin-bottom: 22px; }
 .home-webgl .greeting::before,
 .home-webgl .news::before,
 .home-webgl .agenda::before,
