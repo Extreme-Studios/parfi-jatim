@@ -1,6 +1,11 @@
 (() => {
   const escapeHtml = value => String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
   const safeUrl = value => { try { const url = new URL(String(value || '')); return /^https?:$/.test(url.protocol) ? url.href : ''; } catch { return ''; } };
+  const youtubeEmbed = value => {
+    const source = safeUrl(value);
+    const match = source.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/i);
+    return match ? `https://www.youtube.com/embed/${match[1]}?rel=0` : '';
+  };
   const imageUrl = value => {
     const source = safeUrl(value);
     const id = source.match(/[?&]id=([^&]+)/)?.[1];
@@ -30,7 +35,11 @@
     return `<button class="agenda-poster-item" type="button" aria-label="Buka poster agenda ${escapeHtml(item.nama_event || 'PARFI')}"><img src="${escapeHtml(image)}" alt="Poster agenda ${escapeHtml(item.nama_event || 'PARFI')}"></button>`;
   };
   const archiveNewsCard = item => { const source = safeUrl(item.sumber_url || item.source_url), image = imageUrl(item.gambar_url); if (!source) return ''; return `<a class="archive-card" href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer">${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(item.judul)}" loading="lazy">` : ''}<div class="archive-card-copy"><p class="category">${formatDate(item.tanggal)}</p><h2>${escapeHtml(item.judul)}</h2><p>${escapeHtml(item.ringkasan || item.isi)}</p><p class="archive-source">Sumber: berita asli</p><span class="archive-open">Baca selengkapnya ↗</span></div></a>`; };
-  const filmCard = (item, detailed) => { const video = safeUrl(item.video_url || item.source_url), image = imageUrl(item.gambar_url); if (!detailed) return `<a class="film-teaser-card" href="${escapeHtml(video || '#')}" ${video ? 'target="_blank" rel="noopener noreferrer"' : ''}>${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(item.judul)}" loading="lazy">` : ''}<span>${escapeHtml(item.judul)}</span><b>${video ? '▶ Tonton trailer' : 'Lihat karya'}</b></a>`; return `<article class="film-card"><div class="film-card-cover">${image ? `<img src="${escapeHtml(image)}" alt="Poster ${escapeHtml(item.judul)}" loading="lazy">` : ''}</div><div class="film-card-body"><h2>${escapeHtml(item.judul)}</h2><p>${escapeHtml(item.sinopsis || item.ringkasan || 'Sinopsis belum tersedia.')}</p>${video ? `<a class="film-watch" href="${escapeHtml(video)}" target="_blank" rel="noopener noreferrer">▶ Tonton trailer</a>` : ''}</div></article>`; };
+  const filmCard = (item, detailed) => {
+    const video = safeUrl(item.video_url || item.source_url), image = imageUrl(item.gambar_url), embed = youtubeEmbed(video), anchor = `film-${String(item.id || item.slug || item.judul || 'trailer').replace(/[^a-z0-9_-]+/gi, '-').replace(/(^-|-$)/g, '')}`;
+    if (!detailed) return `<a class="film-teaser-card" href="galeri-film.html#${escapeHtml(anchor)}">${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(item.judul)}" loading="lazy">` : ''}<span>${escapeHtml(item.judul)}</span><b>${video ? '▶ Tonton trailer' : 'Lihat karya'}</b></a>`;
+    return `<article class="film-card film-card-wide" id="${escapeHtml(anchor)}"${image ? ` style="--film-art:url('${escapeHtml(image)}')"` : ''}><div class="film-card-cover">${image ? `<img src="${escapeHtml(image)}" alt="Poster ${escapeHtml(item.judul)}" loading="lazy">` : ''}</div><div class="film-card-body"><h2>${escapeHtml(item.judul)}</h2>${embed ? `<div class="film-video"><iframe src="${escapeHtml(embed)}" title="Trailer ${escapeHtml(item.judul)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>` : ''}<p>${escapeHtml(item.sinopsis || item.ringkasan || 'Sinopsis belum tersedia.')}</p><div class="film-card-label">TRAILER RESMI</div></div></article>`;
+  };
   const visualUrls = (items, feed) => [...new Set([
     ...items.map(item => imageUrl(item.gambar_url)).filter(Boolean),
     ...(feed ? [...feed.querySelectorAll('img')].map(image => image.currentSrc || image.src).filter(Boolean) : []),
