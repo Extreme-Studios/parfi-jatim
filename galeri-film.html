@@ -8,6 +8,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Player-first gallery: no poster columns, two trailers across. */
+    .film-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:22px!important}
+    .film-card-wide{grid-column:auto!important;display:block!important}
+    .film-card-wide:before{display:none}
+    .film-card-wide .film-card-body,.film-card-body{padding:18px!important}
+    .film-card-wide .film-card-body>p{margin:18px 0 0!important;text-align:left!important}
+    .film-card-wide .film-card-body>.film-card-label{margin:16px 0 0!important}
+    .film-video{margin:0!important;aspect-ratio:16/9}
+    .film-card h2{font-size:clamp(1.35rem,2.2vw,2rem)!important;margin:0 0 14px!important}
+    .film-card-cover{display:none!important}
+    @media(max-width:720px){.film-grid{grid-template-columns:1fr!important;gap:16px!important}.film-card-wide .film-card-body,.film-card-body{padding:14px!important}}
+  </style>
   <link rel="stylesheet" href="assets/style.css">
   <style>
     :root{--film-ink:#f4f0e8;--film-muted:#a9b0bb;--film-gold:#d5a934;--film-bg:#081426;--film-panel:#101f35}
@@ -38,8 +51,8 @@
     <main>
       <section class="film-hero"><div class="film-kicker">GALERI FILM · PARFI JAWA TIMUR</div><h1>Ruang untuk karya<br><em>insan film.</em></h1><p>Koleksi trailer, karya audio visual, dan cerita perfilman yang dihimpun oleh PARFI Jawa Timur. Pilih sebuah karya untuk melihat detail dan menonton trailernya langsung di halaman ini.</p></section>
       <section class="film-grid" aria-label="Koleksi trailer film">
-        <article class="film-card film-card-wide" id="trailer-01" style="--film-art:url(assets/images/bangsal-isolasi.jpeg);--page-art:url(assets/images/bangsal-isolasi.jpeg)"><div class="film-card-cover"><img src="assets/images/bangsal-isolasi.jpeg" alt="Poster film Bangsal Isolasi"></div><div class="film-card-body"><div class="film-video"><iframe src="https://www.youtube.com/embed/ebOr2ZFtNEc" title="Trailer Bangsal Isolasi" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><p>Weni menyamar sebagai narapidana untuk mengungkap kematian misterius adiknya di sebuah lapas. Penyelidikannya membawanya ke Bangsal Isolasi, ruang terlarang yang dipercaya menyimpan kutukan dan rahasia mengerikan. Di sana, Weni harus mengungkap kebenaran sebelum menjadi korban berikutnya.</p><div class="film-card-label">MESARI PICTURES · JP PICTURES</div></div></article>
-        <article class="film-card film-card-wide" id="trailer-02" style="--film-art:url(assets/images/narik-sukmo.jpg);--page-art:url(assets/images/narik-sukmo.jpg)"><div class="film-card-cover"><img src="assets/images/narik-sukmo.jpg" alt="Poster film Narik Sukmo"></div><div class="film-card-body"><div class="film-video"><iframe src="https://www.youtube.com/embed/V5opxxeLVxs" title="Trailer Narik Sukmo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><p>Kenara mengunjungi Desa Kelawangin dan menerima selendang misterius yang ternyata berkaitan dengan seorang penari masa lalu. Sejak itu, ia mengalami teror gaib dan tubuhnya mulai menari sendiri. Kenara kemudian terjebak dalam kutukan Narik Sukmo, sebuah ritual yang menyimpan dendam dan rahasia kelam desa. Bersama Dirja, ia berusaha mengungkap kebenaran sebelum nyawanya menjadi tumbal.</p><div class="film-card-label">MESARI PICTURES · JP PICTURES</div></div></article>
+        <article class="film-card" id="trailer-01"><div class="film-card-body"><div class="film-video"><iframe src="https://www.youtube.com/embed/ebOr2ZFtNEc?rel=0" title="Trailer Bangsal Isolasi" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><p>Weni menyamar sebagai narapidana untuk mengungkap kematian misterius adiknya di sebuah lapas. Penyelidikannya membawanya ke Bangsal Isolasi, ruang terlarang yang dipercaya menyimpan kutukan dan rahasia mengerikan. Di sana, Weni harus mengungkap kebenaran sebelum menjadi korban berikutnya.</p><div class="film-card-label">MESARI PICTURES · JP PICTURES</div></div></article>
+        <article class="film-card" id="trailer-02"><div class="film-card-body"><div class="film-video"><iframe src="https://www.youtube.com/embed/V5opxxeLVxs?rel=0" title="Trailer Narik Sukmo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><p>Kenara mengunjungi Desa Kelawangin dan menerima selendang misterius yang ternyata berkaitan dengan seorang penari masa lalu. Sejak itu, ia mengalami teror gaib dan tubuhnya mulai menari sendiri. Kenara kemudian terjebak dalam kutukan Narik Sukmo, sebuah ritual yang menyimpan dendam dan rahasia kelam desa. Bersama Dirja, ia berusaha mengungkap kebenaran sebelum nyawanya menjadi tumbal.</p><div class="film-card-label">MESARI PICTURES · JP PICTURES</div></div></article>
       </section>
       <section class="film-grid" id="filmFeed" aria-label="Trailer dari CMS"></section>
     </main>
