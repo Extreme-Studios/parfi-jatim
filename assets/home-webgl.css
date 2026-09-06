@@ -118,6 +118,19 @@ body.home-webgl {
 .home-webgl .about > *,
 .home-webgl .join > * { position: relative; z-index: 1; }
 
+/* Cinematic text depth across every homepage section. */
+.home-webgl .home-parallax-text {
+  will-change: transform;
+  transition: transform 180ms ease-out;
+}
+.home-webgl .home-parallax-text--near {
+  transform: translate3d(var(--home-text-x-near, 0px), var(--home-text-y-near, 0px), 0);
+}
+.home-webgl .home-parallax-text--far {
+  transform: translate3d(var(--home-text-x-far, 0px), var(--home-text-y-far, 0px), 0);
+}
+.home-webgl .ticker .home-parallax-text { display: inline-block; }
+
 .home-webgl .section-visual-backdrop {
   transform: scale(1.11) translate3d(var(--home-parallax-x-small-neg, 0px), var(--home-parallax-y-small-neg, 0px), 0);
   transition: transform 220ms ease-out;
@@ -207,7 +220,8 @@ body.home-webgl {
   .home-webgl .editorial-hero-copy,
   .home-webgl .editorial-hero-art,
   .home-webgl .section-visual-backdrop,
-  .home-webgl .home-scene { transition: none; transform: none; opacity: 1; filter: none; }
+  .home-webgl .home-scene,
+  .home-webgl .home-parallax-text { transition: none; transform: none; opacity: 1; filter: none; }
 }
 
 /* Homepage trailer rail: one horizontal row, capped at ten items by cms-feed.js. */

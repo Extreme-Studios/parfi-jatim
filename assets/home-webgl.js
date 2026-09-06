@@ -43,6 +43,10 @@
     document.documentElement.style.setProperty('--home-parallax-y-strong-neg', `${(currentY * -38).toFixed(1)}px`);
     document.documentElement.style.setProperty('--home-parallax-x-percent', `${(currentX * 11).toFixed(2)}%`);
     document.documentElement.style.setProperty('--home-parallax-y-percent', `${(currentY * 9).toFixed(2)}%`);
+    document.documentElement.style.setProperty('--home-text-x-near', `${(currentX * 8).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-text-y-near', `${(currentY * 6).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-text-x-far', `${(currentX * -15).toFixed(1)}px`);
+    document.documentElement.style.setProperty('--home-text-y-far', `${(currentY * -11).toFixed(1)}px`);
   };
   const updateTarget = () => {
     targetX = Math.max(-1, Math.min(1, pointerX * 1.18 + gyroX * .82));
@@ -53,6 +57,23 @@
     '.ticker', '#sambutan', '#berita', '#agenda', '#galeri-film', '#tentang', '#gabung', '#kontak', 'footer'
   ].map((selector) => document.querySelector(selector)).filter(Boolean);
   scenes.forEach((scene) => scene.classList.add('home-scene'));
+  const decorateSectionText = (root = document) => {
+    root.querySelectorAll([
+      '.ticker span', '.ticker p', '#sambutan h2', '#sambutan p',
+      '#berita .section-kicker', '#berita h2', '#berita h3', '#berita p',
+      '#agenda .section-kicker', '#agenda h2', '#agenda h3', '#agenda p',
+      '#galeri-film .section-kicker', '#galeri-film h2', '#galeri-film p',
+      '#tentang .section-kicker', '#tentang h2', '#tentang h3', '#tentang p',
+      '#gabung .eyebrow', '#gabung h2', '#gabung p',
+      '#kontak small', '#kontak p'
+    ].join(',')).forEach((element, index) => {
+      if (element.classList.contains('home-parallax-text')) return;
+      element.classList.add('home-parallax-text', index % 3 === 0 ? 'home-parallax-text--far' : 'home-parallax-text--near');
+    });
+  };
+  decorateSectionText();
+  const main = document.querySelector('.home-webgl main');
+  if (main) new MutationObserver(() => decorateSectionText()).observe(main, { childList: true, subtree: true });
   let sceneFrame = 0;
   const clamp = (value) => Math.max(0, Math.min(1, value));
   const updateScenes = () => {
