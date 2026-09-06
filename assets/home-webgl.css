@@ -209,3 +209,24 @@ body.home-webgl {
   .home-webgl .section-visual-backdrop,
   .home-webgl .home-scene { transition: none; transform: none; opacity: 1; filter: none; }
 }
+
+/* Homepage trailer rail: one horizontal row, capped at ten items by cms-feed.js. */
+.home-webgl .film-teaser-grid {
+  display: flex;
+  grid-template-columns: none;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 2px 18px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: #d7a42e transparent;
+}
+.home-webgl .film-teaser-card {
+  flex: 0 0 clamp(155px, 17vw, 210px);
+  scroll-snap-align: start;
+}
+@media (max-width: 720px) {
+  .home-webgl .film-teaser-grid { gap: 12px; padding-bottom: 15px; }
+  .home-webgl .film-teaser-card { flex-basis: 154px; }
+}
