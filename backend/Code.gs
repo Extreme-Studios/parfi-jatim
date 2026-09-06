@@ -209,49 +209,71 @@ function installCinema21TrailerAutomation() {
 
 function runCinema21TrailerSync() {
   const result = { checked: 0, added: 0, skipped: 0, deleted: 0 };
-  const url = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + encodeURIComponent(CMS.cinema21ChannelId);
-  const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true, headers: { 'User-Agent': 'PARFI Jatim Trailer Sync/1.0' } });
-  if (response.getResponseCode() !== 200) throw new Error('Feed Cinema 21 tidak dapat dibaca.');
-
-  const document = XmlService.parse(response.getContentText());
-  const root = document.getRootElement();
-  const atom = root.getNamespace();
-  const media = XmlService.getNamespace('http://search.yahoo.com/mrss/');
-  const yt = XmlService.getNamespace('http://www.youtube.com/xml/schemas/2015');
   const films = filmRecords_();
   const existingUrls = films.map(item => String(item.video_url || '')).filter(Boolean);
-
-  root.getChildren('entry', atom).forEach(entry => {
+  cinema21Uploads_().forEach(video => {
     result.checked += 1;
-    const title = entry.getChildText('title', atom) || '';
-    const videoId = entry.getChildText('videoId', yt) || '';
-    const link = entry.getChildren('link', atom).map(node => node.getAttribute('href') && node.getAttribute('href').getValue()).find(Boolean) || (videoId ? 'https://www.youtube.com/watch?v=' + videoId : '');
-    const group = entry.getChild('group', media);
-    const description = group && group.getChildText('description', media);
-    const releaseDate = cinema21ReleaseDate_(title + '\n' + (description || ''));
-    if (!link || !isCinema21Trailer_(title) || !releaseDate) { result.skipped += 1; return; }
-    if (existingUrls.indexOf(link) >= 0) { result.skipped += 1; return; }
-    const thumbnail = group && group.getChild('thumbnail', media);
+    const releaseDate = cinema21ReleaseDate_(video.title + '\n' + video.description);
+    if (!video.url || !isCinema21Trailer_(video.title) || !releaseDate) { result.skipped += 1; return; }
+    if (existingUrls.indexOf(video.url) >= 0) { result.skipped += 1; return; }
     save_({
       type: 'film',
       data: {
-        title: title,
+        title: video.title,
         summary: 'Film upcoming Cinema 21 · Tayang ' + releaseDate + '.',
-        description: clean_(description || 'Trailer/upcoming resmi Cinema 21.', 12000),
-        image_url: thumbnail && thumbnail.getAttribute('url') ? thumbnail.getAttribute('url').getValue() : '',
-        video_url: link,
+        description: clean_(video.description || 'Trailer/upcoming resmi Cinema 21.', 12000),
+        image_url: video.thumbnail,
+        video_url: video.url,
         date: releaseDate,
         source: 'CINEMA21',
         automated: true,
         status: 'PUBLISH',
       },
     }, { nama: 'Cinema 21 Trailer Sync', role: 'MASTER' });
-    existingUrls.push(link);
+    existingUrls.push(video.url);
     result.added += 1;
   });
   result.deleted = removeExpiredCinema21Trailers_();
   console.log(JSON.stringify(result));
   return result;
+}
+
+function cinema21Uploads_() {
+  const apiKey = PropertiesService.getScriptProperties().getProperty('YOUTUBE_API_KEY');
+  if (apiKey) {
+    try { return cinema21UploadsFromApi_(apiKey); }
+    catch (error) { console.warn('YouTube API gagal, memakai feed cadangan: ' + error.message); }
+  }
+  return cinema21UploadsFromFeed_();
+}
+
+function cinema21UploadsFromApi_(apiKey) {
+  const api = 'https://www.googleapis.com/youtube/v3/';
+  const channel = UrlFetchApp.fetch(api + 'channels?part=contentDetails&id=' + encodeURIComponent(CMS.cinema21ChannelId) + '&key=' + encodeURIComponent(apiKey), { muteHttpExceptions: true });
+  if (channel.getResponseCode() !== 200) throw new Error('YouTube Data API tidak dapat membaca channel.');
+  const channelPayload = JSON.parse(channel.getContentText());
+  const channelItem = (channelPayload.items || [])[0] || {};
+  const uploads = channelItem.contentDetails && channelItem.contentDetails.relatedPlaylists ? channelItem.contentDetails.relatedPlaylists.uploads : '';
+  if (!uploads) throw new Error('Playlist upload Cinema 21 tidak ditemukan.');
+  const response = UrlFetchApp.fetch(api + 'playlistItems?part=snippet&maxResults=25&playlistId=' + encodeURIComponent(uploads) + '&key=' + encodeURIComponent(apiKey), { muteHttpExceptions: true });
+  if (response.getResponseCode() !== 200) throw new Error('YouTube Data API tidak dapat membaca upload terbaru.');
+  return (JSON.parse(response.getContentText()).items || []).map(item => {
+    const snippet = item.snippet || {}, resource = snippet.resourceId || {}, thumbnails = snippet.thumbnails || {};
+    const id = resource.videoId || '';
+    return { title: snippet.title || '', description: snippet.description || '', url: id ? 'https://www.youtube.com/watch?v=' + id : '', thumbnail: (thumbnails.high || {}).url || (thumbnails.medium || {}).url || (thumbnails.default || {}).url || '' };
+  });
+}
+
+function cinema21UploadsFromFeed_() {
+  const url = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + encodeURIComponent(CMS.cinema21ChannelId);
+  const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true, headers: { 'User-Agent': 'PARFI Jatim Trailer Sync/1.0' } });
+  if (response.getResponseCode() !== 200) throw new Error('Feed Cinema 21 tidak dapat dibaca.');
+  const root = XmlService.parse(response.getContentText()).getRootElement();
+  const atom = root.getNamespace(), media = XmlService.getNamespace('http://search.yahoo.com/mrss/'), yt = XmlService.getNamespace('http://www.youtube.com/xml/schemas/2015');
+  return root.getChildren('entry', atom).map(entry => {
+    const id = entry.getChildText('videoId', yt) || '', group = entry.getChild('group', media), thumbnail = group && group.getChild('thumbnail', media);
+    return { title: entry.getChildText('title', atom) || '', description: group && group.getChildText('description', media) || '', url: id ? 'https://www.youtube.com/watch?v=' + id : '', thumbnail: thumbnail && thumbnail.getAttribute('url') ? thumbnail.getAttribute('url').getValue() : '' };
+  });
 }
 
 function isCinema21Trailer_(title) {
