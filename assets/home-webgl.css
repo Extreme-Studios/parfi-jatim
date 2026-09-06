@@ -142,7 +142,11 @@ body.home-webgl {
   transform: scaleX(var(--scene-enter));
   transform-origin: center;
 }
-.home-webgl .home-scene > * { position: relative; z-index: 1; }
+.home-webgl .home-scene > *:not(.section-visual-backdrop) { position: relative; z-index: 1; }
+.home-webgl .home-scene > .section-visual-backdrop {
+  position: absolute;
+  z-index: 0;
+}
 .home-webgl .home-scene.is-scene-active { filter: saturate(1) brightness(1); }
 
 .home-webgl .news-card,
