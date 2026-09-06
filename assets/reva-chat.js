@@ -23,7 +23,8 @@
     }
   } catch (_) {}
   const startDrag = (event) => {
-    if ((event.button !== undefined && event.button !== 0) || event.target.closest('button, input, a, textarea, select, label')) return;
+    const isLauncher = event.currentTarget === launcher;
+    if ((event.button !== undefined && event.button !== 0) || (!isLauncher && event.target.closest('button, input, a, textarea, select, label'))) return;
     event.preventDefault();
     const bounds = root.getBoundingClientRect();
     drag = { id:event.pointerId, startX:event.clientX, startY:event.clientY, left:bounds.left, top:bounds.top, moved:false };

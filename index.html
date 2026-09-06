@@ -59,6 +59,11 @@
     /* Keep the two contact blocks balanced against the outer page edges. */
     @media(min-width:721px){.contact-strip-inner .contact-detail:last-child{justify-self:end;width:min(360px,100%)}}
   </style>
+  <style>
+    .visitor-counter{display:flex;align-items:center;gap:8px;flex:none;padding:10px 14px;border:1px solid #d7a42e88;border-radius:999px;color:#f0c85e;font:700 .74rem/1 var(--font-sans,Arial,sans-serif);background:#03142eb8;box-shadow:0 8px 20px #0005;backdrop-filter:blur(8px)}
+    .visitor-counter svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8}.visitor-counter span{min-width:1.5ch;text-align:center}
+    @media(max-width:780px){.visitor-counter{margin-left:auto;padding:8px 11px;gap:6px;font-size:.68rem}.visitor-counter svg{width:17px;height:17px}}
+  </style>
 </head>
 <body class="home-webgl">
   <div class="grain"></div>
@@ -70,6 +75,7 @@
     <nav class="desktop-nav" aria-label="Navigasi utama desktop">
         <a href="#beranda">Beranda</a><a href="#berita">Berita</a><a href="#agenda">Agenda</a><a href="#galeri-film">Galeri Film</a><a href="#tentang">Tentang</a>
     </nav>
+    <div class="visitor-counter" aria-label="Jumlah kunjungan beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.35-5.5 9.5-5.5S21.5 12 21.5 12s-3.35 5.5-9.5 5.5S2.5 12 2.5 12Z"></path><circle cx="12" cy="12" r="2.8"></circle></svg><span data-visitor-count="71">71</span></div>
     <button class="menu-button" aria-label="Buka menu" aria-expanded="false">Menu</button>
     <nav class="site-menu" aria-label="Navigasi utama">
       <div class="menu-heading"><p>MENU UTAMA</p><b>Navigasi PARFI Jawa Timur</b></div>
@@ -138,6 +144,7 @@
   <script src="assets/cms-feed.js"></script>
   <script src="assets/agenda-lightbox.js"></script>
   <script src="assets/home-webgl.js"></script>
+  <script src="assets/visitor-counter.js"></script>
   <script src="assets/reva-chat.js"></script>
 </body>
 </html>
