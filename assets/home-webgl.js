@@ -116,20 +116,7 @@
   };
   const enableGyro = () => window.addEventListener('deviceorientation', orientation, true);
   if ('DeviceOrientationEvent' in window) {
-    if (typeof window.DeviceOrientationEvent.requestPermission === 'function') {
-      const toggle = document.createElement('button');
-      toggle.type = 'button';
-      toggle.className = 'home-gyro-toggle';
-      toggle.textContent = 'Aktifkan gerak ponsel';
-      toggle.addEventListener('click', async () => {
-        try {
-          const permission = await window.DeviceOrientationEvent.requestPermission();
-          if (permission !== 'granted') return;
-          enableGyro(); toggle.remove();
-        } catch (_) {}
-      });
-      hero.append(toggle);
-    } else {
+    if (typeof window.DeviceOrientationEvent.requestPermission !== 'function') {
       enableGyro();
     }
   }
