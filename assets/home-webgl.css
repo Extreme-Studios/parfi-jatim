@@ -64,7 +64,7 @@ body.home-webgl {
 }
 .home-webgl .editorial-hero-art {
   background-image: linear-gradient(90deg, #020a17 0%, #020a1744 42%, #020a1714), url('images/hero-parfi-filmset.png') !important;
-  background-position: calc(50% + var(--home-parallax-x-medium, 0px)) calc(50% + var(--home-parallax-y-medium, 0px)) !important;
+  background-position: calc(76% + var(--home-parallax-x-medium, 0px)) calc(50% + var(--home-parallax-y-medium, 0px)) !important;
   transform: translate3d(var(--home-parallax-x-strong, 0px), var(--home-parallax-y-strong, 0px), 0) scale(1.065);
   transition: transform 180ms ease-out, background-position 180ms ease-out;
 }
