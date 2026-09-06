@@ -26,6 +26,37 @@
     document.documentElement.style.setProperty('--home-parallax-x', currentX.toFixed(3));
     document.documentElement.style.setProperty('--home-parallax-y', currentY.toFixed(3));
   };
+
+  const scenes = [
+    '.ticker', '#sambutan', '#berita', '#agenda', '#galeri-film', '#tentang', '#gabung', '#kontak', 'footer'
+  ].map((selector) => document.querySelector(selector)).filter(Boolean);
+  scenes.forEach((scene) => scene.classList.add('home-scene'));
+  let sceneFrame = 0;
+  const clamp = (value) => Math.max(0, Math.min(1, value));
+  const updateScenes = () => {
+    sceneFrame = 0;
+    const viewport = window.innerHeight || 1;
+    scenes.forEach((scene) => {
+      const bounds = scene.getBoundingClientRect();
+      const travel = clamp((viewport - bounds.top) / (viewport + bounds.height));
+      const enter = clamp(travel * 2.35);
+      const exit = clamp((travel - .58) * 2.35);
+      scene.style.setProperty('--scene-enter', enter.toFixed(3));
+      scene.style.setProperty('--scene-exit', exit.toFixed(3));
+      scene.style.setProperty('--scene-opacity', (.28 + enter * .72).toFixed(3));
+      scene.style.setProperty('--scene-translate', `${((1 - enter) * 54 - exit * 24).toFixed(1)}px`);
+      scene.style.setProperty('--scene-saturation', (.78 + enter * .22).toFixed(3));
+      scene.style.setProperty('--scene-brightness', (.86 + enter * .14).toFixed(3));
+      scene.style.setProperty('--scene-line-opacity', (enter * .72).toFixed(3));
+      scene.classList.toggle('is-scene-active', enter > .64 && exit < .8);
+    });
+  };
+  const requestSceneUpdate = () => {
+    if (!sceneFrame) sceneFrame = requestAnimationFrame(updateScenes);
+  };
+  updateScenes();
+  window.addEventListener('scroll', requestSceneUpdate, { passive: true });
+  window.addEventListener('resize', requestSceneUpdate, { passive: true });
   window.addEventListener('pointermove', (event) => {
     targetX = Math.max(-1, Math.min(1, event.clientX / window.innerWidth * 2 - 1));
     targetY = Math.max(-1, Math.min(1, event.clientY / window.innerHeight * 2 - 1));

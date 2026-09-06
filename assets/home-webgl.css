@@ -113,6 +113,38 @@ body.home-webgl {
   transition: transform 220ms ease-out;
 }
 
+/* Scroll scenes: a restrained floating transition between homepage sections. */
+.home-webgl .home-scene {
+  --scene-enter: 0;
+  --scene-exit: 0;
+  --scene-opacity: .28;
+  --scene-translate: 54px;
+  --scene-saturation: .78;
+  --scene-brightness: .86;
+  --scene-line-opacity: 0;
+  opacity: var(--scene-opacity);
+  transform: translate3d(0, var(--scene-translate), 0);
+  filter: saturate(var(--scene-saturation)) brightness(var(--scene-brightness));
+  will-change: transform, opacity, filter;
+  transition: opacity 460ms cubic-bezier(.16, 1, .3, 1), transform 700ms cubic-bezier(.16, 1, .3, 1), filter 460ms ease;
+}
+.home-webgl .home-scene::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 8%;
+  right: 8%;
+  top: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(240, 200, 94, .74), transparent);
+  opacity: var(--scene-line-opacity);
+  transform: scaleX(var(--scene-enter));
+  transform-origin: center;
+}
+.home-webgl .home-scene > * { position: relative; z-index: 1; }
+.home-webgl .home-scene.is-scene-active { filter: saturate(1) brightness(1); }
+
 .home-webgl .news-card,
 .home-webgl .agenda-list#eventFeed > .agenda-poster-item,
 .home-webgl .film-teaser-card,
@@ -142,5 +174,6 @@ body.home-webgl {
   .home-webgl .home-cinema-reel,
   .home-webgl .editorial-hero-copy,
   .home-webgl .editorial-hero-art,
-  .home-webgl .section-visual-backdrop { transition: none; transform: none; }
+  .home-webgl .section-visual-backdrop,
+  .home-webgl .home-scene { transition: none; transform: none; opacity: 1; filter: none; }
 }
