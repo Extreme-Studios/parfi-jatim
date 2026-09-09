@@ -3,8 +3,6 @@ const CMS = {
   spreadsheetId: '1Mu_i2-rI1DlKxo39HVQmWmczrnJ5EDd_rELey5L4IVA',
   mediaFolderId: '17v-p-MS4aGGbanTZNHlG4Hy4BwrJRf2V',
   sessionHours: 12,
-  cinema21ChannelId: 'UCudik2UCrl1TGyyPZ2I9Pvg',
-  cinema21RetentionDaysAfterRelease: 1,
 };
 
 function doGet(e) {
@@ -147,7 +145,7 @@ function save_(payload, session) {
     id: existing ? data.id : Utilities.getUuid(), title: title, description: description,
     summary: clean_(data.summary, 300), image: image, status: data.status === 'DRAFT' ? 'DRAFT' : 'PUBLISH',
     date: clean_(data.date, 30), endDate: clean_(data.end_date, 30), location: clean_(data.location, 250),
-    sourceUrl: clean_(data.source_url, 2000), videoUrl: clean_(data.video_url, 2000), source: clean_(data.source, 80), automated: data.automated === true,
+    sourceUrl: clean_(data.source_url, 2000), videoUrl: clean_(data.video_url, 2000),
     author: session.nama, createdAt: existing ? existing.record.dibuat_pada : now, updatedAt: now,
   });
   headers = ensureHeaders_(sheet, Object.keys(record));
@@ -180,8 +178,7 @@ function typeConfig_(type) {
     return { sheet: 'Film', makeRecord: d => ({
       id: d.id, judul: d.title, ringkasan: d.summary, sinopsis: d.description,
       gambar_url: d.image.url, gambar_drive_id: d.image.id, video_url: d.videoUrl,
-      status: d.status, slug: slug_(d.title), tanggal_tayang: d.date,
-      sumber: d.source, otomatis: d.automated ? 'YA' : '', dibuat_pada: d.createdAt,
+      status: d.status, slug: slug_(d.title), dibuat_pada: d.createdAt,
       diubah_pada: d.updatedAt, penulis: d.author,
     }) };
   }
@@ -191,136 +188,6 @@ function typeConfig_(type) {
     status: d.status, slug: slug_(d.title), dibuat_pada: d.createdAt,
     diubah_pada: d.updatedAt, penulis: d.author, jenis: 'BERITA', sumber_url: d.sourceUrl,
   }) };
-}
-
-/*
- * Cinema 21 trailer automation
- * Jalankan installCinema21TrailerAutomation() sekali dari Apps Script untuk
- * membuat trigger per jam. Feed YouTube digunakan agar tanpa API key.
- */
-function installCinema21TrailerAutomation() {
-  const handler = 'runCinema21TrailerSync';
-  ScriptApp.getProjectTriggers()
-    .filter(trigger => trigger.getHandlerFunction() === handler)
-    .forEach(trigger => ScriptApp.deleteTrigger(trigger));
-  ScriptApp.newTrigger(handler).timeBased().everyHours(1).create();
-  return { ok: true, message: 'Sinkron Cinema 21 dijadwalkan setiap jam.' };
-}
-
-function runCinema21TrailerSync() {
-  const result = { checked: 0, added: 0, skipped: 0, deleted: 0 };
-  const films = filmRecords_();
-  const existingUrls = films.map(item => String(item.video_url || '')).filter(Boolean);
-  cinema21Uploads_().forEach(video => {
-    result.checked += 1;
-    const releaseDate = cinema21ReleaseDate_(video.title + '\n' + video.description);
-    if (!video.url || !isCinema21Trailer_(video.title) || !releaseDate) { result.skipped += 1; return; }
-    if (existingUrls.indexOf(video.url) >= 0) { result.skipped += 1; return; }
-    save_({
-      type: 'film',
-      data: {
-        title: video.title,
-        summary: 'Film upcoming Cinema 21 · Tayang ' + releaseDate + '.',
-        description: clean_(video.description || 'Trailer/upcoming resmi Cinema 21.', 12000),
-        image_url: video.thumbnail,
-        video_url: video.url,
-        date: releaseDate,
-        source: 'CINEMA21',
-        automated: true,
-        status: 'PUBLISH',
-      },
-    }, { nama: 'Cinema 21 Trailer Sync', role: 'MASTER' });
-    existingUrls.push(video.url);
-    result.added += 1;
-  });
-  result.deleted = removeExpiredCinema21Trailers_();
-  console.log(JSON.stringify(result));
-  return result;
-}
-
-function cinema21Uploads_() {
-  const apiKey = PropertiesService.getScriptProperties().getProperty('YOUTUBE_API_KEY');
-  if (apiKey) {
-    try { return cinema21UploadsFromApi_(apiKey); }
-    catch (error) { console.warn('YouTube API gagal, memakai feed cadangan: ' + error.message); }
-  }
-  return cinema21UploadsFromFeed_();
-}
-
-function cinema21UploadsFromApi_(apiKey) {
-  const api = 'https://www.googleapis.com/youtube/v3/';
-  const channel = UrlFetchApp.fetch(api + 'channels?part=contentDetails&id=' + encodeURIComponent(CMS.cinema21ChannelId) + '&key=' + encodeURIComponent(apiKey), { muteHttpExceptions: true });
-  if (channel.getResponseCode() !== 200) throw new Error('YouTube Data API tidak dapat membaca channel.');
-  const channelPayload = JSON.parse(channel.getContentText());
-  const channelItem = (channelPayload.items || [])[0] || {};
-  const uploads = channelItem.contentDetails && channelItem.contentDetails.relatedPlaylists ? channelItem.contentDetails.relatedPlaylists.uploads : '';
-  if (!uploads) throw new Error('Playlist upload Cinema 21 tidak ditemukan.');
-  const response = UrlFetchApp.fetch(api + 'playlistItems?part=snippet&maxResults=25&playlistId=' + encodeURIComponent(uploads) + '&key=' + encodeURIComponent(apiKey), { muteHttpExceptions: true });
-  if (response.getResponseCode() !== 200) throw new Error('YouTube Data API tidak dapat membaca upload terbaru.');
-  return (JSON.parse(response.getContentText()).items || []).map(item => {
-    const snippet = item.snippet || {}, resource = snippet.resourceId || {}, thumbnails = snippet.thumbnails || {};
-    const id = resource.videoId || '';
-    return { title: snippet.title || '', description: snippet.description || '', url: id ? 'https://www.youtube.com/watch?v=' + id : '', thumbnail: (thumbnails.high || {}).url || (thumbnails.medium || {}).url || (thumbnails.default || {}).url || '' };
-  });
-}
-
-function cinema21UploadsFromFeed_() {
-  const url = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + encodeURIComponent(CMS.cinema21ChannelId);
-  const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true, headers: { 'User-Agent': 'PARFI Jatim Trailer Sync/1.0' } });
-  if (response.getResponseCode() !== 200) throw new Error('Feed Cinema 21 tidak dapat dibaca.');
-  const root = XmlService.parse(response.getContentText()).getRootElement();
-  const atom = root.getNamespace(), media = XmlService.getNamespace('http://search.yahoo.com/mrss/'), yt = XmlService.getNamespace('http://www.youtube.com/xml/schemas/2015');
-  return root.getChildren('entry', atom).map(entry => {
-    const id = entry.getChildText('videoId', yt) || '', group = entry.getChild('group', media), thumbnail = group && group.getChild('thumbnail', media);
-    return { title: entry.getChildText('title', atom) || '', description: group && group.getChildText('description', media) || '', url: id ? 'https://www.youtube.com/watch?v=' + id : '', thumbnail: thumbnail && thumbnail.getAttribute('url') ? thumbnail.getAttribute('url').getValue() : '' };
-  });
-}
-
-function isCinema21Trailer_(title) {
-  return /\b(trailer|teaser|upcoming|coming soon)\b/i.test(String(title || ''));
-}
-
-function cinema21ReleaseDate_(text) {
-  const value = String(text || '').replace(/\s+/g, ' ').toLowerCase();
-  const monthNames = { januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5, juli: 6, agustus: 7, september: 8, oktober: 9, november: 10, desember: 11 };
-  const named = /(?:tayang(?: di bioskop)?|mulai tayang|hadir di bioskop|in cinemas)[^0-9]{0,35}(\d{1,2})\s+(januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember)\s+(20\d{2})/i.exec(value);
-  const numeric = /(?:tayang(?: di bioskop)?|mulai tayang|hadir di bioskop|in cinemas)[^0-9]{0,35}(\d{1,2})[\/.\-](\d{1,2})[\/.\-](20\d{2})/i.exec(value);
-  let day, month, year;
-  if (named) { day = Number(named[1]); month = monthNames[named[2].toLowerCase()]; year = Number(named[3]); }
-  if (numeric) { day = Number(numeric[1]); month = Number(numeric[2]) - 1; year = Number(numeric[3]); }
-  if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) return '';
-  const date = new Date(Date.UTC(year, month, day));
-  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month || date.getUTCDate() !== day) return '';
-  return Utilities.formatDate(date, 'Asia/Jakarta', 'yyyy-MM-dd');
-}
-
-function filmRecords_() {
-  const rows = values_('Film');
-  const headers = rows.shift() || [];
-  return rows.filter(row => row.some(cell => cell !== '')).map((row, index) => {
-    const item = row_(headers, row);
-    item._rowNumber = index + 2;
-    return item;
-  });
-}
-
-function removeExpiredCinema21Trailers_() {
-  const sheet = SpreadsheetApp.openById(CMS.spreadsheetId).getSheetByName('Film');
-  if (!sheet || sheet.getLastRow() < 2) return 0;
-  const today = Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd');
-  const expired = filmRecords_().filter(item => {
-    if (String(item.otomatis || '').toUpperCase() !== 'YA' || String(item.sumber || '').toUpperCase() !== 'CINEMA21') return false;
-    const releaseDate = String(item.tanggal_tayang || '');
-    return /^20\d{2}-\d{2}-\d{2}$/.test(releaseDate) && today >= addDays_(releaseDate, CMS.cinema21RetentionDaysAfterRelease);
-  });
-  expired.sort((a, b) => b._rowNumber - a._rowNumber).forEach(item => sheet.deleteRow(item._rowNumber));
-  return expired.length;
-}
-
-function addDays_(date, days) {
-  const value = new Date(date + 'T00:00:00Z');
-  value.setUTCDate(value.getUTCDate() + Number(days || 0));
-  return Utilities.formatDate(value, 'Asia/Jakarta', 'yyyy-MM-dd');
 }
 
 function sheet_(config) {
@@ -348,7 +215,7 @@ function saveImage_(dataUrl, fileName) {
   const safeName = String(fileName).replace(/[^a-zA-Z0-9._-]/g, '-');
   const file = DriveApp.getFolderById(CMS.mediaFolderId).createFile(Utilities.newBlob(bytes, match[1], safeName));
   file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-  return { id: file.getId(), url: 'https://drive.google.com/thumbnail?id=' + file.getId() + '&sz=w1600' };
+  return { id: file.getId(), url: 'https://drive.google.com/uc?export=view&id=' + file.getId() };
 }
 
 function findRow_(sheet, headers, id) {
@@ -364,9 +231,7 @@ function findRow_(sheet, headers, id) {
 
 function values_(sheetName) {
   const sheet = SpreadsheetApp.openById(CMS.spreadsheetId).getSheetByName(sheetName);
-  // Tab konten boleh belum dibuat. Untuk pembacaan publik, anggap kosong;
-  // fungsi sheet_ akan membuat tab otomatis saat konten pertama disimpan.
-  if (!sheet) return [['']];
+  if (!sheet) throw new Error('Tab ' + sheetName + ' tidak ditemukan.');
   const width = Math.max(sheet.getLastColumn(), 1);
   const height = Math.max(sheet.getLastRow(), 1);
   return sheet.getRange(1, 1, height, width).getDisplayValues();
