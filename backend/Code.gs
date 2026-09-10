@@ -2,6 +2,7 @@
 const CMS = {
   spreadsheetId: '1Mu_i2-rI1DlKxo39HVQmWmczrnJ5EDd_rELey5L4IVA',
   mediaFolderId: '17v-p-MS4aGGbanTZNHlG4Hy4BwrJRf2V',
+  pengurusFolderId: '1J8AsprL0RQO1s2TX2QoWcn0gFhPWhcFZ',
   sessionHours: 12,
 };
 
@@ -20,6 +21,7 @@ function dispatch_(payload) {
   try {
     const action = String(payload.action || '').toLowerCase();
     if (action === 'public') return { ok: true, items: list_(payload.type, true) };
+    if (action === 'public_pengurus_media') return { ok: true, items: listPengurusMedia_() };
     if (action === 'login') return login_(payload);
     if (action === 'logout') return logout_(payload.token);
     if (action === 'automation_save') return automationSave_(payload);
@@ -216,6 +218,22 @@ function saveImage_(dataUrl, fileName) {
   const file = DriveApp.getFolderById(CMS.mediaFolderId).createFile(Utilities.newBlob(bytes, match[1], safeName));
   file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
   return { id: file.getId(), url: 'https://drive.google.com/uc?export=view&id=' + file.getId() };
+}
+
+function listPengurusMedia_() {
+  const folder = DriveApp.getFolderById(CMS.pengurusFolderId);
+  const files = folder.getFiles();
+  const items = [];
+  while (files.hasNext()) {
+    const file = files.next();
+    if (!/^image\//i.test(file.getMimeType())) continue;
+    items.push({
+      name: file.getName(),
+      id: file.getId(),
+      url: 'https://drive.google.com/thumbnail?id=' + file.getId() + '&sz=w1600',
+    });
+  }
+  return items.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function findRow_(sheet, headers, id) {
